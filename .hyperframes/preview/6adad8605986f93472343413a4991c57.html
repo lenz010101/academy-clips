@@ -45,6 +45,8 @@
       .take.face { object-fit: cover; }
       /* pantalla: completa y grande, fondo rellenado con lienzo borroso */
       .take.screen { object-fit: contain; object-position: center center; background: #000; }
+      /* zoom fijo 1.2x en explicación (moderado para mantener nitidez) */
+      .take.z125 { width: 1296px; height: 2304px; left: -108px; top: -192px; }
       .take.blurbg { left: -110px; top: -110px; width: 1300px; height: 2140px; object-fit: cover;
         filter: blur(62px) brightness(.5) saturate(1.3); border-radius: 0; }
       .scrim { background: linear-gradient(180deg, rgba(5,5,8,.66) 0%, rgba(5,5,8,.30) 30%, rgba(5,5,8,0) 50%); }
@@ -71,16 +73,17 @@
       .brule { position: relative; z-index: 1; width: 220px; height: 12px; border-radius: 6px;
         background: #D2401F; opacity: 0; transform-origin: center center; }
       .bflash { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; background: #D2401F; opacity: 0; z-index: 2; }
-      /* cartel final GUÍA */
-      .endcard { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; background: rgba(6,8,14,.88);
-        display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; opacity: 0; }
-      .end-kick { font-family: "Archivo", sans-serif; font-weight: 900; font-size: 40px; letter-spacing: 10px; color: #F6F3EC; }
-      .end-big { font-family: "Archivo", sans-serif; font-weight: 900; font-size: 290px; letter-spacing: -8px; color: #F6F3EC;
-        text-shadow: 0 6px 40px rgba(0,0,0,.6); }
-      .end-sub { font-family: "Archivo", sans-serif; font-weight: 900; font-size: 44px; color: #F6F3EC; }
+      /* cartelito rojo GUÍA (simple, sin placa fullscreen) */
+      .endcard { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px;
+        display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+        padding-bottom: 430px; opacity: 0; }
+      .guia-box { background: #D2401F; border-radius: 34px; padding: 30px 80px 36px; text-align: center;
+        box-shadow: 0 24px 60px rgba(0,0,0,.45); }
+      .end-kick { font-family: "Archivo", sans-serif; font-weight: 900; font-size: 34px; letter-spacing: 10px; color: #F6F3EC; }
+      .end-big { font-family: "Archivo", sans-serif; font-weight: 900; font-size: 150px; line-height: 1; letter-spacing: -4px; color: #F6F3EC; margin-top: 4px; }
     </style>
   <script data-hyperframes-preview-runtime="1" src="/api/runtime.js"></script>
-<meta name="hyperframes-project-signature" content="c967ef8b342804505c2de41b">
+<meta name="hyperframes-project-signature" content="c6d7f48bb32255e6d07aaa19">
 </head>
   <body>
     <div data-hf-id="hf-qs5z" id="root" data-composition-id="main" data-start="0" data-duration="90" data-width="1080" data-height="1920">
@@ -89,22 +92,15 @@
       <audio data-hf-id="hf-bbp3" id="sfxp1" src="assets/sfx/whoosh-big.mp3" data-start="29.41" data-duration="1.6" data-volume="0.8" data-end="31.01"></audio>
       <audio data-hf-id="hf-m3pr" id="sfxp2" src="assets/sfx/whoosh-big.mp3" data-start="52.6" data-duration="1.6" data-volume="0.8" data-end="54.2"></audio>
       <audio data-hf-id="hf-bjdt" id="sfxcta" src="assets/sfx/pop.mp3" data-start="84.6" data-duration="0.62" data-volume="0.8" data-end="85.22"></audio>
-      <audio data-hf-id="hf-kdkj" id="sfxw1" src="assets/sfx/whoosh.mp3" data-start="8.38" data-duration="0.51" data-volume="0.75" data-end="8.89"></audio>
-      <audio data-hf-id="hf-ds7n" id="sfxw2" src="assets/sfx/whoosh.mp3" data-start="30.70" data-duration="0.51" data-volume="0.75" data-end="31.21"></audio>
-      <audio data-hf-id="hf-h4gg" id="sfxw3" src="assets/sfx/whoosh.mp3" data-start="35.57" data-duration="0.51" data-volume="0.75" data-end="36.08"></audio>
-      <audio data-hf-id="hf-bej8" id="sfxw4" src="assets/sfx/whoosh.mp3" data-start="66.76" data-duration="0.51" data-volume="0.75" data-end="67.27000000000001"></audio>
-      <video data-hf-id="hf-0h6g" id="sg0" class="clip take face" src="assets/vid/take.mp4#t=0.00" data-media-start="0.00" muted playsinline preload="auto" data-start="0.00" data-duration="8.38" data-playback-rate="1.02611" data-end="8.38" data-has-audio="false"></video>
-      <div data-hf-id="hf-vckr" id="sc0" class="clip scrim" data-start="0.00" data-duration="8.38"></div>
-      <video data-hf-id="hf-cqmf" id="sg1b" class="clip take blurbg" src="assets/vid/take.mp4#t=8.60" data-media-start="8.60" muted playsinline preload="auto" data-start="8.38" data-duration="22.32" data-playback-rate="1.02611" data-end="30.700000000000003" data-has-audio="false"></video>
-      <video data-hf-id="hf-jraz" id="sg1" class="clip take screen" src="assets/vid/take.mp4#t=8.60" data-media-start="8.60" muted playsinline preload="auto" data-start="8.38" data-duration="22.32" data-playback-rate="1.02611" data-end="30.700000000000003" data-has-audio="false"></video>
-      <div data-hf-id="hf-v6nf" id="sc1" class="clip scrim" data-start="8.38" data-duration="22.32"></div>
-      <video data-hf-id="hf-hv2w" id="sg2" class="clip take face" src="assets/vid/take.mp4#t=31.50" data-media-start="31.50" muted playsinline preload="auto" data-start="30.70" data-duration="4.87" data-playback-rate="1.02611" data-end="35.57" data-has-audio="false"></video>
-      <div data-hf-id="hf-n9pj" id="sc2" class="clip scrim" data-start="30.70" data-duration="4.87"></div>
-      <video data-hf-id="hf-93rv" id="sg3b" class="clip take blurbg" src="assets/vid/take.mp4#t=36.50" data-media-start="36.50" muted playsinline preload="auto" data-start="35.57" data-duration="31.19" data-playback-rate="1.02611" data-end="66.76" data-has-audio="false"></video>
-      <video data-hf-id="hf-pxqn" id="sg3" class="clip take screen" src="assets/vid/take.mp4#t=36.50" data-media-start="36.50" muted playsinline preload="auto" data-start="35.57" data-duration="31.19" data-playback-rate="1.02611" data-end="66.76" data-has-audio="false"></video>
-      <div data-hf-id="hf-huh9" id="sc3" class="clip scrim" data-start="35.57" data-duration="31.19"></div>
-      <video data-hf-id="hf-xdy9" id="sg4" class="clip take face" src="assets/vid/take.mp4#t=68.50" data-media-start="68.50" muted playsinline preload="auto" data-start="66.76" data-duration="23.24" data-playback-rate="1.02611" data-end="90" data-has-audio="false"></video>
-      <div data-hf-id="hf-5ytg" id="sc4" class="clip scrim" data-start="66.76" data-duration="23.24"></div>
+      <audio data-hf-id="hf-jtgc" id="sfxw1" src="assets/sfx/whoosh.mp3" data-start="10.72" data-duration="0.51" data-volume="0.75" data-end="11.23"></audio>
+      <audio data-hf-id="hf-xthm" id="sfxw2" src="assets/sfx/whoosh.mp3" data-start="69.19" data-duration="0.51" data-volume="0.75" data-end="69.7"></audio>
+      <video data-hf-id="hf-21cn" id="sg0" class="clip take face" src="assets/vid/take.mp4#t=0.00" data-media-start="0.00" muted playsinline preload="auto" data-start="0.00" data-duration="10.72" data-playback-rate="1.02611" data-end="10.72" data-has-audio="false"></video>
+      <div data-hf-id="hf-szxy" id="sc0" class="clip scrim" data-start="0.00" data-duration="10.72"></div>
+      <video data-hf-id="hf-q8xv" id="sg1b" class="clip take blurbg" src="assets/vid/take.mp4#t=11.00" data-media-start="11.00" muted playsinline preload="auto" data-start="10.72" data-duration="58.47" data-playback-rate="1.02611" data-end="69.19" data-has-audio="false"></video>
+      <video data-hf-id="hf-67hp" id="sg1" class="clip take screen z125" src="assets/vid/take.mp4#t=11.00" data-media-start="11.00" muted playsinline preload="auto" data-start="10.72" data-duration="58.47" data-playback-rate="1.02611" data-end="69.19" data-has-audio="false"></video>
+      <div data-hf-id="hf-90wh" id="sc1" class="clip scrim" data-start="10.72" data-duration="58.47"></div>
+      <video data-hf-id="hf-nm5h" id="sg2" class="clip take face" src="assets/vid/take.mp4#t=71.00" data-media-start="71.00" muted playsinline preload="auto" data-start="69.19" data-duration="20.81" data-playback-rate="1.02611" data-end="90" data-has-audio="false"></video>
+      <div data-hf-id="hf-ydeg" id="sc2" class="clip scrim" data-start="69.19" data-duration="20.81"></div>
       <div data-hf-id="hf-87bt" id="cap0" class="clip" data-start="1.44" data-duration="1.01"><div data-hf-id="hf-9nsd" class="group cc" data-layout-allow-overlap="">
         <div data-hf-id="hf-7id9" class="lne" id="cpl0" style="font-size:112px"><span data-hf-id="hf-epql">Si</span> <span data-hf-id="hf-hb4z">tuviera</span> <span data-hf-id="hf-wwgl">una</span></div>
       </div></div>
@@ -135,279 +131,269 @@
       <div data-hf-id="hf-gt7h" id="cap9" class="clip" data-start="8.16" data-duration="0.92"><div data-hf-id="hf-fy6h" class="group cc" data-layout-allow-overlap="">
         <div data-hf-id="hf-k2jd" class="lne" id="cpl9" style="font-size:92px"><span data-hf-id="hf-4e7h">es</span> <span data-hf-id="hf-nl7c">el</span> <span data-hf-id="hf-nkcc">más</span> <span data-hf-id="hf-9qxy">importante.</span></div>
       </div></div>
-      <div data-hf-id="hf-ia2p" id="cap10" class="clip" data-start="9.11" data-duration="1.04"><div data-hf-id="hf-9v02" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-ia2p" id="cap10" class="clip" data-start="9.11" data-duration="1.04"><div data-hf-id="hf-ympv" class="group cc" data-layout-allow-overlap="">
         <div data-hf-id="hf-z066" class="lne" id="cpl10" style="font-size:112px"><span data-hf-id="hf-lkdt">Escuchá.</span></div>
       </div></div>
-      <div data-hf-id="hf-b59b" id="cap12" class="clip" data-start="10.55" data-duration="0.61"><div data-hf-id="hf-tyie" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-b59b" id="cap12" class="clip" data-start="10.55" data-duration="0.61"><div data-hf-id="hf-z10w" class="group cc" data-layout-allow-overlap="">
         <div data-hf-id="hf-cgys" class="lne" id="cpl12" style="font-size:112px"><span data-hf-id="hf-m97h">vas</span> <span data-hf-id="hf-zhz4">a</span> <span data-hf-id="hf-gvnt">generar</span></div>
       </div></div>
-      <div data-hf-id="hf-b5ia" id="cap13" class="clip" data-start="11.19" data-duration="1.01"><div data-hf-id="hf-uctf" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-b5ia" id="cap13" class="clip" data-start="11.19" data-duration="1.01"><div data-hf-id="hf-9v02" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-hn6d" class="lne" id="cpl13" style="font-size:112px"><span data-hf-id="hf-3p2u">no</span> <span data-hf-id="hf-w3uj">uno</span> <span data-hf-id="hf-2wgs">ni</span> <span data-hf-id="hf-9alr">dos,</span></div>
       </div></div>
-      <div data-hf-id="hf-msg6" id="cap14" class="clip" data-start="12.23" data-duration="1.17"><div data-hf-id="hf-ur4g" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-msg6" id="cap14" class="clip" data-start="12.23" data-duration="1.17"><div data-hf-id="hf-tyie" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-w6rn" class="lne" id="cpl14" style="font-size:92px"><span data-hf-id="hf-ck0y">sino</span> <span data-hf-id="hf-h3vb">cuatro</span> <em data-hf-id="hf-yqdn">guiones</em></div>
       </div></div>
-      <div data-hf-id="hf-6cra" id="cap15" class="clip" data-start="13.43" data-duration="0.85"><div data-hf-id="hf-ryz9" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-6cra" id="cap15" class="clip" data-start="13.43" data-duration="0.85"><div data-hf-id="hf-uctf" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-wcqw" class="lne" id="cpl15" style="font-size:92px"><span data-hf-id="hf-iiav">para</span> <span data-hf-id="hf-1qv0">hacer</span> <span data-hf-id="hf-5pjd">videos</span></div>
       </div></div>
-      <div data-hf-id="hf-ncrg" id="cap16" class="clip" data-start="14.31" data-duration="1.09"><div data-hf-id="hf-sdaa" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-ncrg" id="cap16" class="clip" data-start="14.31" data-duration="1.09"><div data-hf-id="hf-ur4g" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-q6lj" class="lne" id="cpl16" style="font-size:76px"><span data-hf-id="hf-wjtb">contando</span> <span data-hf-id="hf-y2fa">del</span> <span data-hf-id="hf-lcg1">lanzamiento</span></div>
       </div></div>
-      <div data-hf-id="hf-wdd7" id="cap17" class="clip" data-start="15.43" data-duration="0.53"><div data-hf-id="hf-srlb" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-wdd7" id="cap17" class="clip" data-start="15.43" data-duration="0.53"><div data-hf-id="hf-ryz9" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-v3sx" class="lne" id="cpl17" style="font-size:112px"><span data-hf-id="hf-1zf2">de</span> <span data-hf-id="hf-r7im">tu</span> <span data-hf-id="hf-zyjz">curso.</span></div>
       </div></div>
-      <div data-hf-id="hf-qff3" id="cap18" class="clip" data-start="15.99" data-duration="0.53"><div data-hf-id="hf-t5wc" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-qff3" id="cap18" class="clip" data-start="15.99" data-duration="0.53"><div data-hf-id="hf-sdaa" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-eeva" class="lne" id="cpl18" style="font-size:112px"><span data-hf-id="hf-dazr">Para</span> <span data-hf-id="hf-yfn7">hacerlo,</span></div>
       </div></div>
-      <div data-hf-id="hf-3m2d" id="cap19" class="clip" data-start="16.55" data-duration="0.93"><div data-hf-id="hf-qdr5" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-3m2d" id="cap19" class="clip" data-start="16.55" data-duration="0.93"><div data-hf-id="hf-srlb" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-l27u" class="lne" id="cpl19" style="font-size:76px"><span data-hf-id="hf-urtr">utilizaría</span> <span data-hf-id="hf-3qoe">esta</span> <em data-hf-id="hf-qc61">herramienta</em></div>
       </div></div>
-      <div data-hf-id="hf-tof2" id="cap20" class="clip" data-start="17.51" data-duration="1.01"><div data-hf-id="hf-qs26" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-tof2" id="cap20" class="clip" data-start="17.51" data-duration="1.01"><div data-hf-id="hf-t5wc" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-adum" class="lne" id="cpl20" style="font-size:76px"><span data-hf-id="hf-mfte">de</span> <span data-hf-id="hf-46e7">inteligencia</span> <span data-hf-id="hf-d61n">artificial,</span></div>
       </div></div>
-      <div data-hf-id="hf-ojpj" id="cap21" class="clip" data-start="18.55" data-duration="0.85"><div data-hf-id="hf-bycy" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-ojpj" id="cap21" class="clip" data-start="18.55" data-duration="0.85"><div data-hf-id="hf-qdr5" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-ft7f" class="lne" id="cpl21" style="font-size:92px"><span data-hf-id="hf-tzyq">que</span> <span data-hf-id="hf-9jm5">colocando</span> <span data-hf-id="hf-w168">algunos</span></div>
       </div></div>
-      <div data-hf-id="hf-nhtt" id="cap22" class="clip" data-start="19.43" data-duration="0.77"><div data-hf-id="hf-bk1x" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-nhtt" id="cap22" class="clip" data-start="19.43" data-duration="0.77"><div data-hf-id="hf-qs26" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-fq36" class="lne" id="cpl22" style="font-size:92px"><span data-hf-id="hf-8284">datos</span> <span data-hf-id="hf-79nu">sobre</span> <span data-hf-id="hf-mea9">el</span> <span data-hf-id="hf-6zmj">curso</span> <span data-hf-id="hf-70g0">y</span> <span data-hf-id="hf-y6oy">la</span></div>
       </div></div>
-      <div data-hf-id="hf-jxqi" id="cap23" class="clip" data-start="20.23" data-duration="0.77"><div data-hf-id="hf-cqz0" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-jxqi" id="cap23" class="clip" data-start="20.23" data-duration="0.77"><div data-hf-id="hf-bycy" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-mkkl" class="lne" id="cpl23" style="font-size:92px"><em data-hf-id="hf-mhgi">academia,</em> <span data-hf-id="hf-4z75">vas</span> <span data-hf-id="hf-wqew">a</span> <span data-hf-id="hf-bul3">poder</span></div>
       </div></div>
-      <div data-hf-id="hf-10z1" id="cap24" class="clip" data-start="21.03" data-duration="0.85"><div data-hf-id="hf-ccnz" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-10z1" id="cap24" class="clip" data-start="21.03" data-duration="0.85"><div data-hf-id="hf-bk1x" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-j09o" class="lne" id="cpl24" style="font-size:92px"><span data-hf-id="hf-ori5">generar</span> <span data-hf-id="hf-fx3a">en</span> <span data-hf-id="hf-fzrh">automático</span></div>
       </div></div>
-      <div data-hf-id="hf-ud01" id="cap25" class="clip" data-start="21.91" data-duration="0.69"><div data-hf-id="hf-djl2" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-ud01" id="cap25" class="clip" data-start="21.91" data-duration="0.69"><div data-hf-id="hf-cqz0" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-5u93" class="lne" id="cpl25" style="font-size:92px"><span data-hf-id="hf-h4nr">cuatro</span> <em data-hf-id="hf-vtd7">guiones</em> <span data-hf-id="hf-ue9r">que</span></div>
       </div></div>
-      <div data-hf-id="hf-jl29" id="cap26" class="clip" data-start="22.63" data-duration="1.09"><div data-hf-id="hf-d5a1" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-jl29" id="cap26" class="clip" data-start="22.63" data-duration="1.09"><div data-hf-id="hf-ccnz" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-pu6g" class="lne" id="cpl26" style="font-size:76px"><span data-hf-id="hf-ceyz">ya</span> <span data-hf-id="hf-77ts">están</span> <span data-hf-id="hf-i4zu">validados</span> <span data-hf-id="hf-7wi2">en</span> <span data-hf-id="hf-mdf9">más</span> <span data-hf-id="hf-mu4f">de</span></div>
       </div></div>
-      <div data-hf-id="hf-f8nq" id="cap27" class="clip" data-start="23.75" data-duration="0.77"><div data-hf-id="hf-ec74" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-f8nq" id="cap27" class="clip" data-start="23.75" data-duration="0.77"><div data-hf-id="hf-djl2" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-fpgc" class="lne" id="cpl27" style="font-size:112px"><span data-hf-id="hf-qd23">20</span> <span data-hf-id="hf-28uf">academias,</span></div>
       </div></div>
-      <div data-hf-id="hf-xxhx" id="cap28" class="clip" data-start="24.55" data-duration="0.61"><div data-hf-id="hf-dxw3" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-xxhx" id="cap28" class="clip" data-start="24.55" data-duration="0.61"><div data-hf-id="hf-d5a1" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-67rs" class="lne" id="cpl28" style="font-size:92px"><span data-hf-id="hf-wi73">con</span> <span data-hf-id="hf-44g9">una</span> <span data-hf-id="hf-zqq5">estructura</span></div>
       </div></div>
-      <div data-hf-id="hf-ck62" id="cap29" class="clip" data-start="25.19" data-duration="0.53"><div data-hf-id="hf-8rwq" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-ck62" id="cap29" class="clip" data-start="25.19" data-duration="0.53"><div data-hf-id="hf-ec74" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-g8wj" class="lne" id="cpl29" style="font-size:92px"><span data-hf-id="hf-usks">que</span> <span data-hf-id="hf-f1pc">convierte.</span></div>
       </div></div>
-      <div data-hf-id="hf-4cbi" id="cap30" class="clip" data-start="25.75" data-duration="0.93"><div data-hf-id="hf-8dlp" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-4cbi" id="cap30" class="clip" data-start="25.75" data-duration="0.93"><div data-hf-id="hf-dxw3" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-ub8h" class="lne" id="cpl30" style="font-size:92px"><span data-hf-id="hf-y58h">Si</span> <span data-hf-id="hf-6o8s">querés</span> <span data-hf-id="hf-msla">el</span> <span data-hf-id="hf-3bl7">acceso</span> <span data-hf-id="hf-vjht">a</span> <span data-hf-id="hf-c6sk">esa</span></div>
       </div></div>
-      <div data-hf-id="hf-27p4" id="cap31" class="clip" data-start="26.71" data-duration="0.84"><div data-hf-id="hf-b6p5" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-27p4" id="cap31" class="clip" data-start="26.71" data-duration="0.84"><div data-hf-id="hf-8rwq" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-h40o" class="lne" id="cpl31" style="font-size:76px"><em data-hf-id="hf-kfzh">herramienta</em> <span data-hf-id="hf-azn8">totalmente</span> <em data-hf-id="hf-lish">gratis,</em></div>
       </div></div>
-      <div data-hf-id="hf-ffxn" id="cap32" class="clip" data-start="27.58" data-duration="0.93"><div data-hf-id="hf-bl06" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-ffxn" id="cap32" class="clip" data-start="27.58" data-duration="0.93"><div data-hf-id="hf-8dlp" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-xxx3" class="lne" id="cpl32" style="font-size:92px"><span data-hf-id="hf-hmq2">comenta</span> <em data-hf-id="hf-g0lz">guión</em> <span data-hf-id="hf-5tix">y</span></div>
       </div></div>
-      <div data-hf-id="hf-vz8c" id="cap33" class="clip" data-start="28.54" data-duration="1.28"><div data-hf-id="hf-bzb7" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-vz8c" id="cap33" class="clip" data-start="28.54" data-duration="1.28"><div data-hf-id="hf-b6p5" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-fzu4" class="lne" id="cpl33" style="font-size:92px"><span data-hf-id="hf-xkf2">te</span> <span data-hf-id="hf-pm8g">llega</span> <span data-hf-id="hf-8at3">en</span> <span data-hf-id="hf-m2hi">un</span> <span data-hf-id="hf-hfqr">minuto.</span></div>
       </div></div>
-      <div data-hf-id="hf-9zwr" id="cap35" class="clip" data-start="30.7" data-duration="0.61"><div data-hf-id="hf-ympv" class="group cc" data-layout-allow-overlap="">
+      <div data-hf-id="hf-9zwr" id="cap35" class="clip" data-start="30.7" data-duration="0.61"><div data-hf-id="hf-bl06" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-a736" class="lne" id="cpl35" style="font-size:92px"><span data-hf-id="hf-vxsu">a</span> <em data-hf-id="hf-1t8c">administrador</em> <span data-hf-id="hf-n8fg">de</span></div>
       </div></div>
-      <div data-hf-id="hf-f8x2" id="cap36" class="clip" data-start="31.34" data-duration="1.01"><div data-hf-id="hf-z10w" class="group cc" data-layout-allow-overlap="">
+      <div data-hf-id="hf-f8x2" id="cap36" class="clip" data-start="31.34" data-duration="1.01"><div data-hf-id="hf-bzb7" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-tttt" class="lne" id="cpl36" style="font-size:76px"><em data-hf-id="hf-5d0p">anuncios</em> <span data-hf-id="hf-nmqh">de</span> <span data-hf-id="hf-lfbg">meta</span> <span data-hf-id="hf-67ty">y</span> <span data-hf-id="hf-k7md">vamos</span> <span data-hf-id="hf-uqvr">a</span></div>
       </div></div>
-      <div data-hf-id="hf-8jto" id="cap37" class="clip" data-start="32.38" data-duration="0.77"><div data-hf-id="hf-xu3t" class="group cc" data-layout-allow-overlap="">
+      <div data-hf-id="hf-8jto" id="cap37" class="clip" data-start="32.38" data-duration="0.77"><div data-hf-id="hf-cdm8" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-m6gg" class="lne" id="cpl37" style="font-size:92px"><span data-hf-id="hf-87p0">crear</span> <span data-hf-id="hf-5bdc">una</span> <em data-hf-id="hf-nqqb">campaña</em></div>
       </div></div>
-      <div data-hf-id="hf-c7t2" id="cap38" class="clip" data-start="33.18" data-duration="1.25"><div data-hf-id="hf-y8eu" class="group cc" data-layout-allow-overlap="">
+      <div data-hf-id="hf-c7t2" id="cap38" class="clip" data-start="33.18" data-duration="1.25"><div data-hf-id="hf-9lh1" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-gwhf" class="lne" id="cpl38" style="font-size:76px"><span data-hf-id="hf-o11i">de</span> <em data-hf-id="hf-3dzw">clientes</em> <em data-hf-id="hf-4iqk">potenciales,</em></div>
       </div></div>
-      <div data-hf-id="hf-fe6t" id="cap39" class="clip" data-start="34.46" data-duration="1.01"><div data-hf-id="hf-x1hr" class="group cc" data-layout-allow-overlap="">
+      <div data-hf-id="hf-fe6t" id="cap39" class="clip" data-start="34.46" data-duration="1.01"><div data-hf-id="hf-9zs2" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-m37q" class="lne" id="cpl39" style="font-size:92px"><span data-hf-id="hf-r2my">no</span> <span data-hf-id="hf-ofcj">de</span> <span data-hf-id="hf-iuey">interacción.</span></div>
       </div></div>
-      <div data-hf-id="hf-1s09" id="cap40" class="clip" data-start="35.5" data-duration="1.09"><div data-hf-id="hf-xfss" class="group cc" data-layout-allow-overlap="">
+      <div data-hf-id="hf-1s09" id="cap40" class="clip" data-start="35.5" data-duration="1.09"><div data-hf-id="hf-ae33" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-scn0" class="lne" id="cpl40" style="font-size:76px"><span data-hf-id="hf-lgzg">Esto</span> <span data-hf-id="hf-7vsg">quiere</span> <span data-hf-id="hf-4pa0">decir</span> <span data-hf-id="hf-v6vt">que</span> <span data-hf-id="hf-rgxz">no</span> <span data-hf-id="hf-tubt">vamos</span></div>
       </div></div>
-      <div data-hf-id="hf-afrf" id="cap41" class="clip" data-start="36.62" data-duration="0.85"><div data-hf-id="hf-cdm8" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-afrf" id="cap41" class="clip" data-start="36.62" data-duration="0.85"><div data-hf-id="hf-ase4" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-oyb9" class="lne" id="cpl41" style="font-size:92px"><span data-hf-id="hf-v56s">a</span> <span data-hf-id="hf-1561">recibir</span> <span data-hf-id="hf-b79i">directamente</span></div>
       </div></div>
-      <div data-hf-id="hf-lkkf" id="cap42" class="clip" data-start="37.5" data-duration="0.93"><div data-hf-id="hf-9lh1" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-lkkf" id="cap42" class="clip" data-start="37.5" data-duration="0.93"><div data-hf-id="hf-808x" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-1kq8" class="lne" id="cpl42" style="font-size:92px"><span data-hf-id="hf-c4kf">mensajes</span> <span data-hf-id="hf-ty9p">a</span> <em data-hf-id="hf-9jnd">WhatsApp</em></div>
       </div></div>
-      <div data-hf-id="hf-pnwk" id="cap43" class="clip" data-start="38.46" data-duration="0.53"><div data-hf-id="hf-9zs2" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-pnwk" id="cap43" class="clip" data-start="38.46" data-duration="0.53"><div data-hf-id="hf-8ejy" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-in8y" class="lne" id="cpl43" style="font-size:112px"><span data-hf-id="hf-mw7z">con</span> <span data-hf-id="hf-y0oq">un</span> <span data-hf-id="hf-n2ci">montón</span></div>
       </div></div>
-      <div data-hf-id="hf-pi5m" id="cap44" class="clip" data-start="39.02" data-duration="0.53"><div data-hf-id="hf-ae33" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-pi5m" id="cap44" class="clip" data-start="39.02" data-duration="0.53"><div data-hf-id="hf-af1c" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-42um" class="lne" id="cpl44" style="font-size:92px"><span data-hf-id="hf-otnk">de</span> <span data-hf-id="hf-a9p3">consultas</span> <span data-hf-id="hf-vl6u">que</span></div>
       </div></div>
-      <div data-hf-id="hf-6chg" id="cap45" class="clip" data-start="39.58" data-duration="0.93"><div data-hf-id="hf-ase4" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-6chg" id="cap45" class="clip" data-start="39.58" data-duration="0.93"><div data-hf-id="hf-a0qb" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-bfaj" class="lne" id="cpl45" style="font-size:76px"><span data-hf-id="hf-esov">solamente</span> <span data-hf-id="hf-1maz">preguntan</span> <span data-hf-id="hf-vs4w">precios</span></div>
       </div></div>
-      <div data-hf-id="hf-8qba" id="cap46" class="clip" data-start="40.54" data-duration="1.33"><div data-hf-id="hf-808x" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-8qba" id="cap46" class="clip" data-start="40.54" data-duration="1.33"><div data-hf-id="hf-9mfa" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-xn11" class="lne" id="cpl46" style="font-size:62px"><span data-hf-id="hf-50wv">y</span> <span data-hf-id="hf-bia0">después</span> <span data-hf-id="hf-o0ba">desaparecen,</span> <span data-hf-id="hf-afd2">sino</span> <span data-hf-id="hf-vzhv">que</span> <span data-hf-id="hf-v18w">vamos</span></div>
       </div></div>
-      <div data-hf-id="hf-w8l3" id="cap47" class="clip" data-start="41.9" data-duration="0.93"><div data-hf-id="hf-8ejy" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-w8l3" id="cap47" class="clip" data-start="41.9" data-duration="0.93"><div data-hf-id="hf-9849" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-cl4t" class="lne" id="cpl47" style="font-size:76px"><span data-hf-id="hf-uckq">a</span> <span data-hf-id="hf-1hn9">llevarlos</span> <span data-hf-id="hf-zik3">a</span> <span data-hf-id="hf-yezr">un</span> <span data-hf-id="hf-f76j">sitio</span> <span data-hf-id="hf-xd7p">web</span></div>
       </div></div>
-      <div data-hf-id="hf-fwyk" id="cap48" class="clip" data-start="42.86" data-duration="0.53"><div data-hf-id="hf-af1c" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-fwyk" id="cap48" class="clip" data-start="42.86" data-duration="0.53"><div data-hf-id="hf-8tt8" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-vee2" class="lne" id="cpl48" style="font-size:92px"><span data-hf-id="hf-i3zu">para</span> <span data-hf-id="hf-wdsw">que</span> <span data-hf-id="hf-cjz3">lleguen</span></div>
       </div></div>
-      <div data-hf-id="hf-m02j" id="cap49" class="clip" data-start="43.42" data-duration="0.69"><div data-hf-id="hf-a0qb" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-m02j" id="cap49" class="clip" data-start="43.42" data-duration="0.69"><div data-hf-id="hf-8fi7" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-82tp" class="lne" id="cpl49" style="font-size:92px"><span data-hf-id="hf-ytas">un</span> <em data-hf-id="hf-2z7r">formulario</em> <span data-hf-id="hf-5f7w">y</span></div>
       </div></div>
-      <div data-hf-id="hf-fz78" id="cap50" class="clip" data-start="44.14" data-duration="0.77"><div data-hf-id="hf-9mfa" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-fz78" id="cap50" class="clip" data-start="44.14" data-duration="0.77"><div data-hf-id="hf-8176" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-x2rf" class="lne" id="cpl50" style="font-size:92px"><span data-hf-id="hf-umxv">vamos</span> <span data-hf-id="hf-zwv4">a</span> <span data-hf-id="hf-2l5d">filtrarlos</span></div>
       </div></div>
-      <div data-hf-id="hf-uvbg" id="cap51" class="clip" data-start="44.94" data-duration="0.76"><div data-hf-id="hf-9849" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-uvbg" id="cap51" class="clip" data-start="44.94" data-duration="0.76"><div data-hf-id="hf-7mw5" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-npog" class="lne" id="cpl51" style="font-size:92px"><span data-hf-id="hf-48at">y</span> <span data-hf-id="hf-p1c9">nutrirlos</span> <span data-hf-id="hf-hpot">para</span></div>
       </div></div>
-      <div data-hf-id="hf-cpr8" id="cap52" class="clip" data-start="45.73" data-duration="1.09"><div data-hf-id="hf-8tt8" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-cpr8" id="cap52" class="clip" data-start="45.73" data-duration="1.09"><div data-hf-id="hf-78l4" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-2ub3" class="lne" id="cpl52" style="font-size:76px"><span data-hf-id="hf-qf7h">que</span> <span data-hf-id="hf-akzj">solamente</span> <span data-hf-id="hf-46g4">consigamos</span></div>
       </div></div>
-      <div data-hf-id="hf-i6tm" id="cap53" class="clip" data-start="46.85" data-duration="1.17"><div data-hf-id="hf-8fi7" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-i6tm" id="cap53" class="clip" data-start="46.85" data-duration="1.17"><div data-hf-id="hf-6ua3" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-b2pe" class="lne" id="cpl53" style="font-size:92px"><span data-hf-id="hf-1awu">gente</span> <span data-hf-id="hf-kzwk">calificada</span> <span data-hf-id="hf-qtii">que</span></div>
       </div></div>
-      <div data-hf-id="hf-nrx4" id="cap54" class="clip" data-start="48.05" data-duration="0.53"><div data-hf-id="hf-8176" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-nrx4" id="cap54" class="clip" data-start="48.05" data-duration="0.53"><div data-hf-id="hf-uq2n" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-uuuu" class="lne" id="cpl54" style="font-size:112px"><span data-hf-id="hf-wurk">después</span> <span data-hf-id="hf-xiik">va</span> <span data-hf-id="hf-lvyw">a</span></div>
       </div></div>
-      <div data-hf-id="hf-w6pd" id="cap55" class="clip" data-start="48.61" data-duration="1.41"><div data-hf-id="hf-7mw5" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-w6pd" id="cap55" class="clip" data-start="48.61" data-duration="1.41"><div data-hf-id="hf-v4do" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-ddwq" class="lne" id="cpl55" style="font-size:76px"><span data-hf-id="hf-0y0a">retroalimentar</span> <span data-hf-id="hf-sr46">la</span> <em data-hf-id="hf-oynn">campaña</em></div>
       </div></div>
-      <div data-hf-id="hf-0lkw" id="cap56" class="clip" data-start="50.05" data-duration="0.85"><div data-hf-id="hf-78l4" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-0lkw" id="cap56" class="clip" data-start="50.05" data-duration="0.85"><div data-hf-id="hf-txgl" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-pjqp" class="lne" id="cpl56" style="font-size:92px"><span data-hf-id="hf-khu0">para</span> <span data-hf-id="hf-1nba">que</span> <span data-hf-id="hf-0143">consiga</span></div>
       </div></div>
-      <div data-hf-id="hf-xzm0" id="cap57" class="clip" data-start="50.93" data-duration="1.17"><div data-hf-id="hf-6ua3" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-xzm0" id="cap57" class="clip" data-start="50.93" data-duration="1.17"><div data-hf-id="hf-ubrm" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-gy66" class="lne" id="cpl57" style="font-size:92px"><span data-hf-id="hf-hmcg">aún</span> <span data-hf-id="hf-txje">mejores</span> <span data-hf-id="hf-srdr">perfiles</span></div>
       </div></div>
-      <div data-hf-id="hf-higk" id="cap58" class="clip" data-start="52.13" data-duration="1.12"><div data-hf-id="hf-uq2n" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-higk" id="cap58" class="clip" data-start="52.13" data-duration="1.12"><div data-hf-id="hf-wbar" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-sp4q" class="lne" id="cpl58" style="font-size:112px"><span data-hf-id="hf-mhwy">con</span> <span data-hf-id="hf-llo7">el</span> <span data-hf-id="hf-4osx">tiempo.</span></div>
       </div></div>
-      <div data-hf-id="hf-q753" id="cap60" class="clip" data-start="54.21" data-duration="0.69"><div data-hf-id="hf-v4do" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-q753" id="cap60" class="clip" data-start="54.21" data-duration="0.69"><div data-hf-id="hf-wpls" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-uv64" class="lne" id="cpl60" style="font-size:92px"><span data-hf-id="hf-jzza">comunicar</span> <span data-hf-id="hf-m3lx">con</span> <span data-hf-id="hf-s7iu">cada</span></div>
       </div></div>
-      <div data-hf-id="hf-f7vw" id="cap61" class="clip" data-start="54.93" data-duration="0.53"><div data-hf-id="hf-txgl" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-f7vw" id="cap61" class="clip" data-start="54.93" data-duration="0.53"><div data-hf-id="hf-viop" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-r18m" class="lne" id="cpl61" style="font-size:112px"><span data-hf-id="hf-avcr">uno</span> <span data-hf-id="hf-iv25">de</span> <span data-hf-id="hf-ujq6">todos</span></div>
       </div></div>
-      <div data-hf-id="hf-1vfj" id="cap62" class="clip" data-start="55.49" data-duration="0.77"><div data-hf-id="hf-ubrm" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-1vfj" id="cap62" class="clip" data-start="55.49" data-duration="0.77"><div data-hf-id="hf-vwzq" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-76oe" class="lne" id="cpl62" style="font-size:92px"><span data-hf-id="hf-uur9">los</span> <span data-hf-id="hf-juw6">interesados</span> <span data-hf-id="hf-j9d6">de</span></div>
       </div></div>
-      <div data-hf-id="hf-0oab" id="cap63" class="clip" data-start="56.29" data-duration="1.01"><div data-hf-id="hf-wbar" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-0oab" id="cap63" class="clip" data-start="56.29" data-duration="1.01"><div data-hf-id="hf-rjmf" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-9qh7" class="lne" id="cpl63" style="font-size:76px"><span data-hf-id="hf-bbmm">forma</span> <span data-hf-id="hf-f6t9">automática,</span> <span data-hf-id="hf-lhnv">a</span> <span data-hf-id="hf-ahqc">través</span> <span data-hf-id="hf-f01y">de</span></div>
       </div></div>
-      <div data-hf-id="hf-smmg" id="cap64" class="clip" data-start="57.33" data-duration="0.53"><div data-hf-id="hf-wpls" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-smmg" id="cap64" class="clip" data-start="57.33" data-duration="0.53"><div data-hf-id="hf-rxxg" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-obww" class="lne" id="cpl64" style="font-size:92px"><span data-hf-id="hf-25ga">este</span> <em data-hf-id="hf-ugg5">sistema</em> <span data-hf-id="hf-elqx">de</span></div>
       </div></div>
-      <div data-hf-id="hf-0pyj" id="cap65" class="clip" data-start="57.89" data-duration="0.98"><div data-hf-id="hf-viop" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-0pyj" id="cap65" class="clip" data-start="57.89" data-duration="0.98"><div data-hf-id="hf-tyeu" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-mdqj" class="lne" id="cpl65" style="font-size:92px"><em data-hf-id="hf-s19p">automatizaciones.</em></div>
       </div></div>
-      <div data-hf-id="hf-557y" id="cap66" class="clip" data-start="58.9" data-duration="0.93"><div data-hf-id="hf-vwzq" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-557y" id="cap66" class="clip" data-start="58.9" data-duration="0.93"><div data-hf-id="hf-tk3t" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-gvbw" class="lne" id="cpl66" style="font-size:76px"><span data-hf-id="hf-d2fb">Para</span> <span data-hf-id="hf-1909">que</span> <span data-hf-id="hf-vqks">converse</span> <span data-hf-id="hf-ovr4">con</span> <span data-hf-id="hf-0va6">ellos,</span></div>
       </div></div>
-      <div data-hf-id="hf-ssg1" id="cap67" class="clip" data-start="59.86" data-duration="1.25"><div data-hf-id="hf-rjmf" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-ssg1" id="cap67" class="clip" data-start="59.86" data-duration="1.25"><div data-hf-id="hf-ur0w" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-shz3" class="lne" id="cpl67" style="font-size:76px"><span data-hf-id="hf-fkip">responda</span> <span data-hf-id="hf-utge">sus</span> <span data-hf-id="hf-wvpm">dudas</span> <span data-hf-id="hf-4mlu">y</span> <span data-hf-id="hf-g6wv">les</span> <span data-hf-id="hf-prta">haga</span></div>
       </div></div>
-      <div data-hf-id="hf-nvma" id="cap68" class="clip" data-start="61.14" data-duration="1.01"><div data-hf-id="hf-rxxg" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-nvma" id="cap68" class="clip" data-start="61.14" data-duration="1.01"><div data-hf-id="hf-ucpv" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-j14y" class="lne" id="cpl68" style="font-size:76px"><span data-hf-id="hf-oyn1">seguimientos</span> <span data-hf-id="hf-xmtk">hasta</span> <span data-hf-id="hf-32fc">estén</span></div>
       </div></div>
-      <div data-hf-id="hf-kl9q" id="cap69" class="clip" data-start="62.18" data-duration="0.84"><div data-hf-id="hf-tyeu" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-kl9q" id="cap69" class="clip" data-start="62.18" data-duration="0.84"><div data-hf-id="hf-sd6q" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-7qy7" class="lne" id="cpl69" style="font-size:92px"><span data-hf-id="hf-riwf">listos</span> <span data-hf-id="hf-k3iz">para</span> <span data-hf-id="hf-4qer">comprar.</span></div>
       </div></div>
-      <div data-hf-id="hf-d9se" id="cap70" class="clip" data-start="63.05" data-duration="0.85"><div data-hf-id="hf-tk3t" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-d9se" id="cap70" class="clip" data-start="63.05" data-duration="0.85"><div data-hf-id="hf-ryvp" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-5pcd" class="lne" id="cpl70" style="font-size:92px"><span data-hf-id="hf-nv05">Una</span> <span data-hf-id="hf-gef2">vez</span> <span data-hf-id="hf-2fxc">que</span> <span data-hf-id="hf-t5f7">la</span> <span data-hf-id="hf-jwj3">persona</span> <span data-hf-id="hf-hr0p">se</span></div>
       </div></div>
-      <div data-hf-id="hf-0mge" id="cap71" class="clip" data-start="63.93" data-duration="0.69"><div data-hf-id="hf-ur0w" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-0mge" id="cap71" class="clip" data-start="63.93" data-duration="0.69"><div data-hf-id="hf-t5ss" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-lk9m" class="lne" id="cpl71" style="font-size:92px"><span data-hf-id="hf-ok20">quiere</span> <em data-hf-id="hf-2m2w">inscribir,</em></div>
       </div></div>
-      <div data-hf-id="hf-kv3b" id="cap72" class="clip" data-start="64.65" data-duration="0.69"><div data-hf-id="hf-ucpv" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-kv3b" id="cap72" class="clip" data-start="64.65" data-duration="0.69"><div data-hf-id="hf-srhr" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-ne3n" class="lne" id="cpl72" style="font-size:92px"><span data-hf-id="hf-e2pn">recién</span> <span data-hf-id="hf-8k9b">ahí</span> <span data-hf-id="hf-sneq">vamos</span></div>
       </div></div>
-      <div data-hf-id="hf-qu1w" id="cap73" class="clip" data-start="65.37" data-duration="0.61"><div data-hf-id="hf-sd6q" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-qu1w" id="cap73" class="clip" data-start="65.37" data-duration="0.61"><div data-hf-id="hf-qrym" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-k7mr" class="lne" id="cpl73" style="font-size:112px"><span data-hf-id="hf-l3cu">a</span> <span data-hf-id="hf-wz2j">pasarle</span> <span data-hf-id="hf-jkya">tu</span></div>
       </div></div>
-      <div data-hf-id="hf-4c54" id="cap74" class="clip" data-start="66.01" data-duration="0.77"><div data-hf-id="hf-ryvp" class="group cc screen-cap" data-layout-allow-overlap="">
+      <div data-hf-id="hf-4c54" id="cap74" class="clip" data-start="66.01" data-duration="0.77"><div data-hf-id="hf-qdnl" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-sjw9" class="lne" id="cpl74" style="font-size:92px"><em data-hf-id="hf-n6hm">contacto</em> <span data-hf-id="hf-jp7y">para</span> <span data-hf-id="hf-21mb">que</span></div>
       </div></div>
-      <div data-hf-id="hf-w6ge" id="cap75" class="clip" data-start="66.81" data-duration="1.33"><div data-hf-id="hf-w8vp" class="group cc" data-layout-allow-overlap="">
+      <div data-hf-id="hf-w6ge" id="cap75" class="clip" data-start="66.81" data-duration="1.33"><div data-hf-id="hf-ze4t" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-kfwz" class="lne" id="cpl75" style="font-size:62px"><span data-hf-id="hf-jm08">gestiones</span> <span data-hf-id="hf-tjq8">la</span> <em data-hf-id="hf-wyl0">inscripción</em> <span data-hf-id="hf-3for">y</span> <span data-hf-id="hf-lzz8">el</span> <span data-hf-id="hf-g8qg">tema</span></div>
       </div></div>
-      <div data-hf-id="hf-exq4" id="cap76" class="clip" data-start="68.17" data-duration="1.33"><div data-hf-id="hf-wn6q" class="group cc" data-layout-allow-overlap="">
+      <div data-hf-id="hf-exq4" id="cap76" class="clip" data-start="68.17" data-duration="1.33"><div data-hf-id="hf-zsfu" class="group cc screen-cap" data-layout-allow-overlap="">
         <div data-hf-id="hf-y15b" class="lne" id="cpl76" style="font-size:92px"><span data-hf-id="hf-5lfu">del</span> <span data-hf-id="hf-nr66">pago.</span> <span data-hf-id="hf-7n2u">No</span> <span data-hf-id="hf-28bg">antes.</span></div>
       </div></div>
-      <div data-hf-id="hf-wwf2" id="cap77" class="clip" data-start="69.53" data-duration="1.17"><div data-hf-id="hf-vg9n" class="group cc" data-layout-allow-overlap="">
+      <div data-hf-id="hf-wwf2" id="cap77" class="clip" data-start="69.53" data-duration="1.17"><div data-hf-id="hf-xu3t" class="group cc" data-layout-allow-overlap="">
         <div data-hf-id="hf-bt0i" class="lne" id="cpl77" style="font-size:76px"><span data-hf-id="hf-p5ib">Las</span> <span data-hf-id="hf-2kep">academias</span> <span data-hf-id="hf-0236">que</span> <span data-hf-id="hf-vmy7">hoy</span> <span data-hf-id="hf-rv90">no</span> <span data-hf-id="hf-a1co">están</span></div>
       </div></div>
-      <div data-hf-id="hf-s1i8" id="cap78" class="clip" data-start="70.73" data-duration="1.09"><div data-hf-id="hf-vuko" class="group cc" data-layout-allow-overlap="">
+      <div data-hf-id="hf-s1i8" id="cap78" class="clip" data-start="70.73" data-duration="1.09"><div data-hf-id="hf-y8eu" class="group cc" data-layout-allow-overlap="">
         <div data-hf-id="hf-cv2k" class="lne" id="cpl78" style="font-size:62px"><span data-hf-id="hf-jifo">implementando</span> <span data-hf-id="hf-z7lt">un</span> <em data-hf-id="hf-fpqx">sistema</em> <span data-hf-id="hf-ucbr">como</span> <span data-hf-id="hf-bj0i">este,</span></div>
       </div></div>
-      <div data-hf-id="hf-hdh1" id="cap79" class="clip" data-start="71.85" data-duration="0.77"><div data-hf-id="hf-yh54" class="group cc" data-layout-allow-overlap="">
+      <div data-hf-id="hf-hdh1" id="cap79" class="clip" data-start="71.85" data-duration="0.77"><div data-hf-id="hf-x1hr" class="group cc" data-layout-allow-overlap="">
         <div data-hf-id="hf-0rdu" class="lne" id="cpl79" style="font-size:92px"><span data-hf-id="hf-jawx">para</span> <span data-hf-id="hf-7gyf">poder</span> <span data-hf-id="hf-xikx">filtrar</span></div>
       </div></div>
-      <div data-hf-id="hf-iw01" id="cap80" class="clip" data-start="72.65" data-duration="0.61"><div data-hf-id="hf-y2u3" class="group cc" data-layout-allow-overlap="">
+      <div data-hf-id="hf-iw01" id="cap80" class="clip" data-start="72.65" data-duration="0.61"><div data-hf-id="hf-xfss" class="group cc" data-layout-allow-overlap="">
         <div data-hf-id="hf-oc9q" class="lne" id="cpl80" style="font-size:92px"><span data-hf-id="hf-9h1e">sus</span> <span data-hf-id="hf-evl3">contactos,</span></div>
       </div></div>
-      <div data-hf-id="hf-dx61" id="cap81" class="clip" data-start="73.29" data-duration="0.69"><div data-hf-id="hf-xoj2" class="group cc" data-layout-allow-overlap="">
+      <div data-hf-id="hf-dx61" id="cap81" class="clip" data-start="73.29" data-duration="0.69"><div data-hf-id="hf-w8vp" class="group cc" data-layout-allow-overlap="">
         <div data-hf-id="hf-fw7l" class="lne" id="cpl81" style="font-size:92px"><span data-hf-id="hf-41yk">pasan</span> <span data-hf-id="hf-zlwu">un</span> <span data-hf-id="hf-5ojq">montón</span></div>
       </div></div>
-      <div data-hf-id="hf-o8ze" id="cap82" class="clip" data-start="74.01" data-duration="0.77"><div data-hf-id="hf-xa81" class="group cc" data-layout-allow-overlap="">
+      <div data-hf-id="hf-o8ze" id="cap82" class="clip" data-start="74.01" data-duration="0.77"><div data-hf-id="hf-wn6q" class="group cc" data-layout-allow-overlap="">
         <div data-hf-id="hf-1wws" class="lne" id="cpl82" style="font-size:92px"><span data-hf-id="hf-fso0">de</span> <span data-hf-id="hf-vsh1">tiempo</span> <span data-hf-id="hf-7wj7">respondiendo</span></div>
       </div></div>
-      <div data-hf-id="hf-teul" id="cap83" class="clip" data-start="74.81" data-duration="1.25"><div data-hf-id="hf-wvx0" class="group cc" data-layout-allow-overlap="">
+      <div data-hf-id="hf-teul" id="cap83" class="clip" data-start="74.81" data-duration="1.25"><div data-hf-id="hf-vg9n" class="group cc" data-layout-allow-overlap="">
         <div data-hf-id="hf-f6lp" class="lne" id="cpl83" style="font-size:76px"><span data-hf-id="hf-kp1t">a</span> <span data-hf-id="hf-tms7">consultas</span> <span data-hf-id="hf-fecz">de</span> <span data-hf-id="hf-iyvo">personas</span> <span data-hf-id="hf-zns5">que</span> <span data-hf-id="hf-kg4u">solo</span></div>
       </div></div>
-      <div data-hf-id="hf-s4s4" id="cap84" class="clip" data-start="76.09" data-duration="1.25"><div data-hf-id="hf-whlz" class="group cc" data-layout-allow-overlap="">
+      <div data-hf-id="hf-s4s4" id="cap84" class="clip" data-start="76.09" data-duration="1.25"><div data-hf-id="hf-vuko" class="group cc" data-layout-allow-overlap="">
         <div data-hf-id="hf-a98n" class="lne" id="cpl84" style="font-size:62px"><span data-hf-id="hf-aq9m">quieren</span> <span data-hf-id="hf-uupy">saber</span> <span data-hf-id="hf-i0yr">precio</span> <span data-hf-id="hf-rzwu">o</span> <span data-hf-id="hf-96fo">ni</span> <span data-hf-id="hf-i2p4">siquiera</span></div>
       </div></div>
-      <div data-hf-id="hf-4gnk" id="cap85" class="clip" data-start="77.37" data-duration="0.85"><div data-hf-id="hf-w3ay" class="group cc" data-layout-allow-overlap="">
+      <div data-hf-id="hf-4gnk" id="cap85" class="clip" data-start="77.37" data-duration="0.85"><div data-hf-id="hf-yh54" class="group cc" data-layout-allow-overlap="">
         <div data-hf-id="hf-l3l1" class="lne" id="cpl85" style="font-size:92px"><span data-hf-id="hf-jq56">saben</span> <span data-hf-id="hf-detu">de</span> <span data-hf-id="hf-0up8">que</span> <span data-hf-id="hf-szct">se</span> <span data-hf-id="hf-e07d">trata</span> <span data-hf-id="hf-kt25">el</span></div>
       </div></div>
-      <div data-hf-id="hf-drxx" id="cap86" class="clip" data-start="78.25" data-duration="0.69"><div data-hf-id="hf-vozx" class="group cc" data-layout-allow-overlap="">
+      <div data-hf-id="hf-drxx" id="cap86" class="clip" data-start="78.25" data-duration="0.69"><div data-hf-id="hf-y2u3" class="group cc" data-layout-allow-overlap="">
         <div data-hf-id="hf-6pq3" class="lne" id="cpl86" style="font-size:112px"><span data-hf-id="hf-antn">curso</span> <span data-hf-id="hf-3tzs">y</span> <span data-hf-id="hf-2l69">casi</span></div>
       </div></div>
-      <div data-hf-id="hf-842w" id="cap87" class="clip" data-start="78.97" data-duration="1.41"><div data-hf-id="hf-1nlc" class="group cc" data-layout-allow-overlap="">
+      <div data-hf-id="hf-842w" id="cap87" class="clip" data-start="78.97" data-duration="1.41"><div data-hf-id="hf-xoj2" class="group cc" data-layout-allow-overlap="">
         <div data-hf-id="hf-o94u" class="lne" id="cpl87" style="font-size:62px"><span data-hf-id="hf-goty">nunca</span> <span data-hf-id="hf-jbou">logran</span> <span data-hf-id="hf-s4vo">conseguir</span> <span data-hf-id="hf-l7d6">el</span> <span data-hf-id="hf-fgqo">número</span> <span data-hf-id="hf-d0it">de</span></div>
       </div></div>
-      <div data-hf-id="hf-wfe5" id="cap88" class="clip" data-start="80.41" data-duration="0.6"><div data-hf-id="hf-19ab" class="group cc" data-layout-allow-overlap="">
+      <div data-hf-id="hf-wfe5" id="cap88" class="clip" data-start="80.41" data-duration="0.6"><div data-hf-id="hf-xa81" class="group cc" data-layout-allow-overlap="">
         <div data-hf-id="hf-cgdy" class="lne" id="cpl88" style="font-size:92px"><span data-hf-id="hf-esde">alumnos</span> <span data-hf-id="hf-0ge7">que</span> <span data-hf-id="hf-8rgf">les</span></div>
       </div></div>
-      <div data-hf-id="hf-k9pj" id="cap89" class="clip" data-start="81.04" data-duration="0.61"><div data-hf-id="hf-z8sx" class="group cc" data-layout-allow-overlap="">
+      <div data-hf-id="hf-k9pj" id="cap89" class="clip" data-start="81.04" data-duration="0.61"><div data-hf-id="hf-wvx0" class="group cc" data-layout-allow-overlap="">
         <div data-hf-id="hf-sw6h" class="lne" id="cpl89" style="font-size:92px"><span data-hf-id="hf-vnvz">gustaría</span> <span data-hf-id="hf-m324">para</span> <span data-hf-id="hf-9vcf">sus</span></div>
       </div></div>
-      <div data-hf-id="hf-eqsf" id="cap90" class="clip" data-start="81.68" data-duration="1.17"><div data-hf-id="hf-zn3y" class="group cc" data-layout-allow-overlap="">
+      <div data-hf-id="hf-eqsf" id="cap90" class="clip" data-start="81.68" data-duration="1.17"><div data-hf-id="hf-whlz" class="group cc" data-layout-allow-overlap="">
         <div data-hf-id="hf-1ozb" class="lne" id="cpl90" style="font-size:92px"><span data-hf-id="hf-xl5c">cursos</span> <span data-hf-id="hf-se7v">o</span> <span data-hf-id="hf-51zb">formaciones.</span></div>
       </div></div>
-      <div data-hf-id="hf-d605" id="cap91" class="clip" data-start="82.88" data-duration="0.85"><div data-hf-id="hf-01ez" class="group cc" data-layout-allow-overlap="">
+      <div data-hf-id="hf-d605" id="cap91" class="clip" data-start="82.88" data-duration="0.85"><div data-hf-id="hf-w3ay" class="group cc" data-layout-allow-overlap="">
         <div data-hf-id="hf-bvu4" class="lne" id="cpl91" style="font-size:92px"><span data-hf-id="hf-zc5k">Si</span> <span data-hf-id="hf-syv6">te</span> <span data-hf-id="hf-mnv2">está</span> <span data-hf-id="hf-vvx1">pasando</span> <span data-hf-id="hf-u8uo">esto,</span></div>
       </div></div>
-      <div data-hf-id="hf-lnnw" id="cap92" class="clip" data-start="83.76" data-duration="0.69"><div data-hf-id="hf-0fq0" class="group cc" data-layout-allow-overlap="">
+      <div data-hf-id="hf-lnnw" id="cap92" class="clip" data-start="83.76" data-duration="0.69"><div data-hf-id="hf-vozx" class="group cc" data-layout-allow-overlap="">
         <div data-hf-id="hf-f38h" class="lne" id="cpl92" style="font-size:92px"><span data-hf-id="hf-rqp0">coméntame</span> <span data-hf-id="hf-ozxk">acá</span> <span data-hf-id="hf-wjhy">abajo</span></div>
       </div></div>
       <div data-hf-id="hf-onwh" id="blk0" class="clip blk" data-layout-allow-overlap="" data-start="9.5" data-duration="1.57"><div data-hf-id="hf-2kxz" class="bgroup" data-layout-allow-overlap=""><div data-hf-id="hf-2b0l" class="bnum grot" data-layout-allow-overlap="">01</div><div data-hf-id="hf-44qo" class="bword grot" data-layout-allow-overlap="">Paso 1</div><div data-hf-id="hf-lam8" class="brule"></div></div><div data-hf-id="hf-35fo" class="bflash"></div></div>
       <div data-hf-id="hf-69zt" id="blk1" class="clip blk" data-layout-allow-overlap="" data-start="29.41" data-duration="1.81"><div data-hf-id="hf-w5gn" class="bgroup" data-layout-allow-overlap=""><div data-hf-id="hf-3hxo" class="bnum grot" data-layout-allow-overlap="">02</div><div data-hf-id="hf-2xtl" class="bword grot" data-layout-allow-overlap="">Paso 2</div><div data-hf-id="hf-kqns" class="brule"></div></div><div data-hf-id="hf-dj0c" class="bflash"></div></div>
       <div data-hf-id="hf-u9on" id="blk2" class="clip blk" data-layout-allow-overlap="" data-start="52.6" data-duration="2"><div data-hf-id="hf-vr5m" class="bgroup" data-layout-allow-overlap=""><div data-hf-id="hf-33mn" class="bnum grot" data-layout-allow-overlap="">03</div><div data-hf-id="hf-3c4m" class="bword grot" data-layout-allow-overlap="">Paso 3</div><div data-hf-id="hf-jjqp" class="brule"></div></div><div data-hf-id="hf-cc39" class="bflash"></div></div>
-      <div data-hf-id="hf-3wpf" id="cta" class="clip" data-start="84.6" data-duration="5.4"><div data-hf-id="hf-3cdp" class="endcard"><div data-hf-id="hf-ykrp" class="end-kick">comentá la palabra</div><div data-hf-id="hf-1os0" class="end-big">GUÍA</div><div data-hf-id="hf-pp91" class="end-sub">y te la mando para recibirla</div></div></div>
+      <div data-hf-id="hf-3wpf" id="cta" class="clip" data-start="84.6" data-duration="5.4"><div data-hf-id="hf-3cdp" class="endcard"><div data-hf-id="hf-mku2" class="guia-box"><div data-hf-id="hf-3ogz" class="end-kick">COMENTÁ</div><div data-hf-id="hf-1os0" class="end-big">GUÍA</div></div></div></div>
     </div>
     
   <script>window.__timelines = window.__timelines || {};
 const tl = gsap.timeline({ paused: true });
 window.__timelines["main"] = tl;
-tl.fromTo("#sg0", { opacity: 0, scale: 1.04 }, { opacity: 1, scale: 1, duration: 0.22, ease: "power2.out", immediateRender: false }, 0);
-tl.to("#sg0", { opacity: 0, scale: 1.03, duration: 0.14, ease: "power2.in" }, 8.24);
+tl.fromTo("#sg0", { opacity: 0 }, { opacity: 1, duration: 0.22, ease: "power2.out", immediateRender: false }, 0);
+tl.to("#sg0", { opacity: 0, duration: 0.14, ease: "power2.in" }, 10.58);
 tl.fromTo("#sc0", { opacity: 0 }, { opacity: 1, duration: 0.22, ease: "power2.out", immediateRender: false }, 0);
-tl.to("#sc0", { opacity: 0, duration: 0.14, ease: "power2.in" }, 8.24);
-tl.fromTo("#sg1", { opacity: 0, scale: 1.04 }, { opacity: 1, scale: 1, duration: 0.22, ease: "power2.out", immediateRender: false }, 8.38);
-tl.to("#sg1", { opacity: 0, scale: 1.03, duration: 0.14, ease: "power2.in" }, 30.56);
-tl.fromTo("#sg1b", { opacity: 0 }, { opacity: 1, duration: 0.22, ease: "power2.out", immediateRender: false }, 8.38);
-tl.to("#sg1b", { opacity: 0, duration: 0.14, ease: "power2.in" }, 30.56);
-tl.fromTo("#sc1", { opacity: 0 }, { opacity: 1, duration: 0.22, ease: "power2.out", immediateRender: false }, 8.38);
-tl.to("#sc1", { opacity: 0, duration: 0.14, ease: "power2.in" }, 30.56);
-tl.fromTo("#sg2", { opacity: 0, scale: 1.04 }, { opacity: 1, scale: 1, duration: 0.22, ease: "power2.out", immediateRender: false }, 30.7);
-tl.to("#sg2", { opacity: 0, scale: 1.03, duration: 0.14, ease: "power2.in" }, 35.43);
-tl.fromTo("#sc2", { opacity: 0 }, { opacity: 1, duration: 0.22, ease: "power2.out", immediateRender: false }, 30.7);
-tl.to("#sc2", { opacity: 0, duration: 0.14, ease: "power2.in" }, 35.43);
-tl.fromTo("#sg3", { opacity: 0, scale: 1.04 }, { opacity: 1, scale: 1, duration: 0.22, ease: "power2.out", immediateRender: false }, 35.57);
-tl.to("#sg3", { opacity: 0, scale: 1.03, duration: 0.14, ease: "power2.in" }, 66.62);
-tl.fromTo("#sg3b", { opacity: 0 }, { opacity: 1, duration: 0.22, ease: "power2.out", immediateRender: false }, 35.57);
-tl.to("#sg3b", { opacity: 0, duration: 0.14, ease: "power2.in" }, 66.62);
-tl.fromTo("#sc3", { opacity: 0 }, { opacity: 1, duration: 0.22, ease: "power2.out", immediateRender: false }, 35.57);
-tl.to("#sc3", { opacity: 0, duration: 0.14, ease: "power2.in" }, 66.62);
-tl.fromTo("#sg4", { opacity: 0, scale: 1.04 }, { opacity: 1, scale: 1, duration: 0.22, ease: "power2.out", immediateRender: false }, 66.76);
-tl.to("#sg4", { opacity: 0, scale: 1.03, duration: 0.14, ease: "power2.in" }, 89.86);
-tl.fromTo("#sc4", { opacity: 0 }, { opacity: 1, duration: 0.22, ease: "power2.out", immediateRender: false }, 66.76);
-tl.to("#sc4", { opacity: 0, duration: 0.14, ease: "power2.in" }, 89.86);
+tl.to("#sc0", { opacity: 0, duration: 0.14, ease: "power2.in" }, 10.58);
+tl.fromTo("#sg1", { opacity: 0 }, { opacity: 1, duration: 0.22, ease: "power2.out", immediateRender: false }, 10.72);
+tl.to("#sg1", { opacity: 0, duration: 0.14, ease: "power2.in" }, 69.05);
+tl.fromTo("#sg1b", { opacity: 0 }, { opacity: 1, duration: 0.22, ease: "power2.out", immediateRender: false }, 10.72);
+tl.to("#sg1b", { opacity: 0, duration: 0.14, ease: "power2.in" }, 69.05);
+tl.fromTo("#sc1", { opacity: 0 }, { opacity: 1, duration: 0.22, ease: "power2.out", immediateRender: false }, 10.72);
+tl.to("#sc1", { opacity: 0, duration: 0.14, ease: "power2.in" }, 69.05);
+tl.fromTo("#sg2", { opacity: 0 }, { opacity: 1, duration: 0.22, ease: "power2.out", immediateRender: false }, 69.19);
+tl.to("#sg2", { opacity: 0, duration: 0.14, ease: "power2.in" }, 89.86);
+tl.fromTo("#sc2", { opacity: 0 }, { opacity: 1, duration: 0.22, ease: "power2.out", immediateRender: false }, 69.19);
+tl.to("#sc2", { opacity: 0, duration: 0.14, ease: "power2.in" }, 89.86);
 tl.fromTo("#cpl0", { opacity: 0, scale: 0.82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: 0.2, ease: "back.out(2.2)", immediateRender: false }, 1.44);
 tl.to("#cap0", { opacity: 0, y: -14, duration: 0.1, ease: "power2.in" }, 2.35);
 tl.fromTo("#cpl1", { opacity: 0, scale: 0.82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: 0.2, ease: "back.out(2.2)", immediateRender: false }, 2.48);
@@ -592,7 +578,6 @@ tl.fromTo("#blk0 .bflash", { opacity: 0.95 }, { opacity: 0, duration: 0.26, ease
 tl.fromTo("#blk0 .bnum", { opacity: 0, scale: 1.28 }, { opacity: 1, scale: 1, duration: 0.7, ease: "power3.out", immediateRender: false }, 9.52);
 tl.fromTo("#blk0 .bword", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.22, ease: "back.out(1.6)", immediateRender: false }, 9.55);
 tl.fromTo("#blk0 .brule", { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: 0.3, ease: "power3.out" }, 9.8);
-tl.fromTo("#blk0 .bgroup", { scale: 1 }, { scale: 1.07, duration: 1.57, ease: "power1.out", immediateRender: false }, 9.5);
 tl.to("#blk0 .bword", { opacity: 0, duration: 0.12, ease: "power2.in" }, 10.94);
 tl.to("#blk0 .bnum", { opacity: 0, duration: 0.12, ease: "power2.in" }, 10.94);
 tl.to("#blk0 .brule", { opacity: 0, duration: 0.12, ease: "power2.in" }, 10.94);
@@ -600,7 +585,6 @@ tl.fromTo("#blk1 .bflash", { opacity: 0.95 }, { opacity: 0, duration: 0.26, ease
 tl.fromTo("#blk1 .bnum", { opacity: 0, scale: 1.28 }, { opacity: 1, scale: 1, duration: 0.7, ease: "power3.out", immediateRender: false }, 29.43);
 tl.fromTo("#blk1 .bword", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.22, ease: "back.out(1.6)", immediateRender: false }, 29.46);
 tl.fromTo("#blk1 .brule", { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: 0.3, ease: "power3.out" }, 29.71);
-tl.fromTo("#blk1 .bgroup", { scale: 1 }, { scale: 1.07, duration: 1.81, ease: "power1.out", immediateRender: false }, 29.41);
 tl.to("#blk1 .bword", { opacity: 0, duration: 0.12, ease: "power2.in" }, 31.09);
 tl.to("#blk1 .bnum", { opacity: 0, duration: 0.12, ease: "power2.in" }, 31.09);
 tl.to("#blk1 .brule", { opacity: 0, duration: 0.12, ease: "power2.in" }, 31.09);
@@ -608,11 +592,9 @@ tl.fromTo("#blk2 .bflash", { opacity: 0.95 }, { opacity: 0, duration: 0.26, ease
 tl.fromTo("#blk2 .bnum", { opacity: 0, scale: 1.28 }, { opacity: 1, scale: 1, duration: 0.7, ease: "power3.out", immediateRender: false }, 52.62);
 tl.fromTo("#blk2 .bword", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.22, ease: "back.out(1.6)", immediateRender: false }, 52.65);
 tl.fromTo("#blk2 .brule", { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: 0.3, ease: "power3.out" }, 52.9);
-tl.fromTo("#blk2 .bgroup", { scale: 1 }, { scale: 1.07, duration: 2, ease: "power1.out", immediateRender: false }, 52.6);
 tl.to("#blk2 .bword", { opacity: 0, duration: 0.12, ease: "power2.in" }, 54.47);
 tl.to("#blk2 .bnum", { opacity: 0, duration: 0.12, ease: "power2.in" }, 54.47);
 tl.to("#blk2 .brule", { opacity: 0, duration: 0.12, ease: "power2.in" }, 54.47);
 tl.fromTo("#cta .endcard", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out", immediateRender: false }, 84.6);
-tl.fromTo("#cta .end-big", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.8)", immediateRender: false }, 84.65);
 tl.seek(0);</script></body>
 </html>

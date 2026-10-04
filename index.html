@@ -15,6 +15,8 @@
       .take.face { object-fit: cover; }
       /* pantalla: completa y grande, fondo rellenado con lienzo borroso */
       .take.screen { object-fit: contain; object-position: center center; background: #000; }
+      /* zoom fijo 1.2x en explicación (moderado para mantener nitidez) */
+      .take.z125 { width: 1296px; height: 2304px; left: -108px; top: -192px; }
       .take.blurbg { left: -110px; top: -110px; width: 1300px; height: 2140px; object-fit: cover;
         filter: blur(62px) brightness(.5) saturate(1.3); border-radius: 0; }
       .scrim { background: linear-gradient(180deg, rgba(5,5,8,.66) 0%, rgba(5,5,8,.30) 30%, rgba(5,5,8,0) 50%); }
@@ -41,13 +43,14 @@
       .brule { position: relative; z-index: 1; width: 220px; height: 12px; border-radius: 6px;
         background: #D2401F; opacity: 0; transform-origin: center center; }
       .bflash { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; background: #D2401F; opacity: 0; z-index: 2; }
-      /* cartel final GUÍA */
-      .endcard { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; background: rgba(6,8,14,.88);
-        display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; opacity: 0; }
-      .end-kick { font-family: "Archivo", sans-serif; font-weight: 900; font-size: 40px; letter-spacing: 10px; color: #F6F3EC; }
-      .end-big { font-family: "Archivo", sans-serif; font-weight: 900; font-size: 290px; letter-spacing: -8px; color: #F6F3EC;
-        text-shadow: 0 6px 40px rgba(0,0,0,.6); }
-      .end-sub { font-family: "Archivo", sans-serif; font-weight: 900; font-size: 44px; color: #F6F3EC; }
+      /* cartelito rojo GUÍA (simple, sin placa fullscreen) */
+      .endcard { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px;
+        display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+        padding-bottom: 430px; opacity: 0; }
+      .guia-box { background: #D2401F; border-radius: 34px; padding: 30px 80px 36px; text-align: center;
+        box-shadow: 0 24px 60px rgba(0,0,0,.45); }
+      .end-kick { font-family: "Archivo", sans-serif; font-weight: 900; font-size: 34px; letter-spacing: 10px; color: #F6F3EC; }
+      .end-big { font-family: "Archivo", sans-serif; font-weight: 900; font-size: 150px; line-height: 1; letter-spacing: -4px; color: #F6F3EC; margin-top: 4px; }
     </style>
   </head>
   <body>
@@ -57,22 +60,15 @@
       <audio id="sfxp1" src="assets/sfx/whoosh-big.mp3" data-start="29.41" data-duration="1.6" data-volume="0.8"></audio>
       <audio id="sfxp2" src="assets/sfx/whoosh-big.mp3" data-start="52.6" data-duration="1.6" data-volume="0.8"></audio>
       <audio id="sfxcta" src="assets/sfx/pop.mp3" data-start="84.6" data-duration="0.62" data-volume="0.8"></audio>
-      <audio id="sfxw1" src="assets/sfx/whoosh.mp3" data-start="8.38" data-duration="0.51" data-volume="0.75"></audio>
-      <audio id="sfxw2" src="assets/sfx/whoosh.mp3" data-start="30.70" data-duration="0.51" data-volume="0.75"></audio>
-      <audio id="sfxw3" src="assets/sfx/whoosh.mp3" data-start="35.57" data-duration="0.51" data-volume="0.75"></audio>
-      <audio id="sfxw4" src="assets/sfx/whoosh.mp3" data-start="66.76" data-duration="0.51" data-volume="0.75"></audio>
-      <video id="sg0" class="clip take face" src="assets/vid/take.mp4#t=0.00" data-media-start="0.00" muted playsinline preload="auto" data-start="0.00" data-duration="8.38" data-playback-rate="1.02611"></video>
-      <div id="sc0" class="clip scrim" data-start="0.00" data-duration="8.38"></div>
-      <video id="sg1b" class="clip take blurbg" src="assets/vid/take.mp4#t=8.60" data-media-start="8.60" muted playsinline preload="auto" data-start="8.38" data-duration="22.32" data-playback-rate="1.02611"></video>
-      <video id="sg1" class="clip take screen" src="assets/vid/take.mp4#t=8.60" data-media-start="8.60" muted playsinline preload="auto" data-start="8.38" data-duration="22.32" data-playback-rate="1.02611"></video>
-      <div id="sc1" class="clip scrim" data-start="8.38" data-duration="22.32"></div>
-      <video id="sg2" class="clip take face" src="assets/vid/take.mp4#t=31.50" data-media-start="31.50" muted playsinline preload="auto" data-start="30.70" data-duration="4.87" data-playback-rate="1.02611"></video>
-      <div id="sc2" class="clip scrim" data-start="30.70" data-duration="4.87"></div>
-      <video id="sg3b" class="clip take blurbg" src="assets/vid/take.mp4#t=36.50" data-media-start="36.50" muted playsinline preload="auto" data-start="35.57" data-duration="31.19" data-playback-rate="1.02611"></video>
-      <video id="sg3" class="clip take screen" src="assets/vid/take.mp4#t=36.50" data-media-start="36.50" muted playsinline preload="auto" data-start="35.57" data-duration="31.19" data-playback-rate="1.02611"></video>
-      <div id="sc3" class="clip scrim" data-start="35.57" data-duration="31.19"></div>
-      <video id="sg4" class="clip take face" src="assets/vid/take.mp4#t=68.50" data-media-start="68.50" muted playsinline preload="auto" data-start="66.76" data-duration="23.24" data-playback-rate="1.02611"></video>
-      <div id="sc4" class="clip scrim" data-start="66.76" data-duration="23.24"></div>
+      <audio id="sfxw1" src="assets/sfx/whoosh.mp3" data-start="10.72" data-duration="0.51" data-volume="0.75"></audio>
+      <audio id="sfxw2" src="assets/sfx/whoosh.mp3" data-start="69.19" data-duration="0.51" data-volume="0.75"></audio>
+      <video id="sg0" class="clip take face" src="assets/vid/take.mp4#t=0.00" data-media-start="0.00" muted playsinline preload="auto" data-start="0.00" data-duration="10.72" data-playback-rate="1.02611"></video>
+      <div id="sc0" class="clip scrim" data-start="0.00" data-duration="10.72"></div>
+      <video id="sg1b" class="clip take blurbg" src="assets/vid/take.mp4#t=11.00" data-media-start="11.00" muted playsinline preload="auto" data-start="10.72" data-duration="58.47" data-playback-rate="1.02611"></video>
+      <video id="sg1" class="clip take screen z125" src="assets/vid/take.mp4#t=11.00" data-media-start="11.00" muted playsinline preload="auto" data-start="10.72" data-duration="58.47" data-playback-rate="1.02611"></video>
+      <div id="sc1" class="clip scrim" data-start="10.72" data-duration="58.47"></div>
+      <video id="sg2" class="clip take face" src="assets/vid/take.mp4#t=71.00" data-media-start="71.00" muted playsinline preload="auto" data-start="69.19" data-duration="20.81" data-playback-rate="1.02611"></video>
+      <div id="sc2" class="clip scrim" data-start="69.19" data-duration="20.81"></div>
       <div id="cap0" class="clip" data-start="1.44" data-duration="1.01"><div class="group cc" data-layout-allow-overlap>
         <div class="lne" id="cpl0" style="font-size:112px"><span>Si</span> <span>tuviera</span> <span>una</span></div>
       </div></div>
@@ -103,10 +99,10 @@
       <div id="cap9" class="clip" data-start="8.16" data-duration="0.92"><div class="group cc" data-layout-allow-overlap>
         <div class="lne" id="cpl9" style="font-size:92px"><span>es</span> <span>el</span> <span>más</span> <span>importante.</span></div>
       </div></div>
-      <div id="cap10" class="clip" data-start="9.11" data-duration="1.04"><div class="group cc screen-cap" data-layout-allow-overlap>
+      <div id="cap10" class="clip" data-start="9.11" data-duration="1.04"><div class="group cc" data-layout-allow-overlap>
         <div class="lne" id="cpl10" style="font-size:112px"><span>Escuchá.</span></div>
       </div></div>
-      <div id="cap12" class="clip" data-start="10.55" data-duration="0.61"><div class="group cc screen-cap" data-layout-allow-overlap>
+      <div id="cap12" class="clip" data-start="10.55" data-duration="0.61"><div class="group cc" data-layout-allow-overlap>
         <div class="lne" id="cpl12" style="font-size:112px"><span>vas</span> <span>a</span> <span>generar</span></div>
       </div></div>
       <div id="cap13" class="clip" data-start="11.19" data-duration="1.01"><div class="group cc screen-cap" data-layout-allow-overlap>
@@ -172,22 +168,22 @@
       <div id="cap33" class="clip" data-start="28.54" data-duration="1.28"><div class="group cc screen-cap" data-layout-allow-overlap>
         <div class="lne" id="cpl33" style="font-size:92px"><span>te</span> <span>llega</span> <span>en</span> <span>un</span> <span>minuto.</span></div>
       </div></div>
-      <div id="cap35" class="clip" data-start="30.7" data-duration="0.61"><div class="group cc" data-layout-allow-overlap>
+      <div id="cap35" class="clip" data-start="30.7" data-duration="0.61"><div class="group cc screen-cap" data-layout-allow-overlap>
         <div class="lne" id="cpl35" style="font-size:92px"><span>a</span> <em>administrador</em> <span>de</span></div>
       </div></div>
-      <div id="cap36" class="clip" data-start="31.34" data-duration="1.01"><div class="group cc" data-layout-allow-overlap>
+      <div id="cap36" class="clip" data-start="31.34" data-duration="1.01"><div class="group cc screen-cap" data-layout-allow-overlap>
         <div class="lne" id="cpl36" style="font-size:76px"><em>anuncios</em> <span>de</span> <span>meta</span> <span>y</span> <span>vamos</span> <span>a</span></div>
       </div></div>
-      <div id="cap37" class="clip" data-start="32.38" data-duration="0.77"><div class="group cc" data-layout-allow-overlap>
+      <div id="cap37" class="clip" data-start="32.38" data-duration="0.77"><div class="group cc screen-cap" data-layout-allow-overlap>
         <div class="lne" id="cpl37" style="font-size:92px"><span>crear</span> <span>una</span> <em>campaña</em></div>
       </div></div>
-      <div id="cap38" class="clip" data-start="33.18" data-duration="1.25"><div class="group cc" data-layout-allow-overlap>
+      <div id="cap38" class="clip" data-start="33.18" data-duration="1.25"><div class="group cc screen-cap" data-layout-allow-overlap>
         <div class="lne" id="cpl38" style="font-size:76px"><span>de</span> <em>clientes</em> <em>potenciales,</em></div>
       </div></div>
-      <div id="cap39" class="clip" data-start="34.46" data-duration="1.01"><div class="group cc" data-layout-allow-overlap>
+      <div id="cap39" class="clip" data-start="34.46" data-duration="1.01"><div class="group cc screen-cap" data-layout-allow-overlap>
         <div class="lne" id="cpl39" style="font-size:92px"><span>no</span> <span>de</span> <span>interacción.</span></div>
       </div></div>
-      <div id="cap40" class="clip" data-start="35.5" data-duration="1.09"><div class="group cc" data-layout-allow-overlap>
+      <div id="cap40" class="clip" data-start="35.5" data-duration="1.09"><div class="group cc screen-cap" data-layout-allow-overlap>
         <div class="lne" id="cpl40" style="font-size:76px"><span>Esto</span> <span>quiere</span> <span>decir</span> <span>que</span> <span>no</span> <span>vamos</span></div>
       </div></div>
       <div id="cap41" class="clip" data-start="36.62" data-duration="0.85"><div class="group cc screen-cap" data-layout-allow-overlap>
@@ -289,10 +285,10 @@
       <div id="cap74" class="clip" data-start="66.01" data-duration="0.77"><div class="group cc screen-cap" data-layout-allow-overlap>
         <div class="lne" id="cpl74" style="font-size:92px"><em>contacto</em> <span>para</span> <span>que</span></div>
       </div></div>
-      <div id="cap75" class="clip" data-start="66.81" data-duration="1.33"><div class="group cc" data-layout-allow-overlap>
+      <div id="cap75" class="clip" data-start="66.81" data-duration="1.33"><div class="group cc screen-cap" data-layout-allow-overlap>
         <div class="lne" id="cpl75" style="font-size:62px"><span>gestiones</span> <span>la</span> <em>inscripción</em> <span>y</span> <span>el</span> <span>tema</span></div>
       </div></div>
-      <div id="cap76" class="clip" data-start="68.17" data-duration="1.33"><div class="group cc" data-layout-allow-overlap>
+      <div id="cap76" class="clip" data-start="68.17" data-duration="1.33"><div class="group cc screen-cap" data-layout-allow-overlap>
         <div class="lne" id="cpl76" style="font-size:92px"><span>del</span> <span>pago.</span> <span>No</span> <span>antes.</span></div>
       </div></div>
       <div id="cap77" class="clip" data-start="69.53" data-duration="1.17"><div class="group cc" data-layout-allow-overlap>
@@ -346,36 +342,26 @@
       <div id="blk0" class="clip blk" data-layout-allow-overlap data-start="9.5" data-duration="1.57"><div class="bgroup" data-layout-allow-overlap><div class="bnum grot" data-layout-allow-overlap>01</div><div class="bword grot" data-layout-allow-overlap>Paso 1</div><div class="brule"></div></div><div class="bflash"></div></div>
       <div id="blk1" class="clip blk" data-layout-allow-overlap data-start="29.41" data-duration="1.81"><div class="bgroup" data-layout-allow-overlap><div class="bnum grot" data-layout-allow-overlap>02</div><div class="bword grot" data-layout-allow-overlap>Paso 2</div><div class="brule"></div></div><div class="bflash"></div></div>
       <div id="blk2" class="clip blk" data-layout-allow-overlap data-start="52.6" data-duration="2"><div class="bgroup" data-layout-allow-overlap><div class="bnum grot" data-layout-allow-overlap>03</div><div class="bword grot" data-layout-allow-overlap>Paso 3</div><div class="brule"></div></div><div class="bflash"></div></div>
-      <div id="cta" class="clip" data-start="84.6" data-duration="5.4"><div class="endcard"><div class="end-kick">comentá la palabra</div><div class="end-big">GUÍA</div><div class="end-sub">y te la mando para recibirla</div></div></div>
+      <div id="cta" class="clip" data-start="84.6" data-duration="5.4"><div class="endcard"><div class="guia-box"><div class="end-kick">COMENTÁ</div><div class="end-big">GUÍA</div></div></div></div>
     </div>
     <script>
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
       window.__timelines["main"] = tl;
-      tl.fromTo("#sg0", { opacity: 0, scale: 1.04 }, { opacity: 1, scale: 1, duration: .22, ease: "power2.out", immediateRender: false }, 0.00);
-      tl.to("#sg0", { opacity: 0, scale: 1.03, duration: .14, ease: "power2.in" }, 8.24);
+      tl.fromTo("#sg0", { opacity: 0 }, { opacity: 1, duration: .22, ease: "power2.out", immediateRender: false }, 0.00);
+      tl.to("#sg0", { opacity: 0, duration: .14, ease: "power2.in" }, 10.58);
       tl.fromTo("#sc0", { opacity: 0 }, { opacity: 1, duration: .22, ease: "power2.out", immediateRender: false }, 0.00);
-      tl.to("#sc0", { opacity: 0, duration: .14, ease: "power2.in" }, 8.24);
-      tl.fromTo("#sg1", { opacity: 0, scale: 1.04 }, { opacity: 1, scale: 1, duration: .22, ease: "power2.out", immediateRender: false }, 8.38);
-      tl.to("#sg1", { opacity: 0, scale: 1.03, duration: .14, ease: "power2.in" }, 30.56);
-      tl.fromTo("#sg1b", { opacity: 0 }, { opacity: 1, duration: .22, ease: "power2.out", immediateRender: false }, 8.38);
-      tl.to("#sg1b", { opacity: 0, duration: .14, ease: "power2.in" }, 30.56);
-      tl.fromTo("#sc1", { opacity: 0 }, { opacity: 1, duration: .22, ease: "power2.out", immediateRender: false }, 8.38);
-      tl.to("#sc1", { opacity: 0, duration: .14, ease: "power2.in" }, 30.56);
-      tl.fromTo("#sg2", { opacity: 0, scale: 1.04 }, { opacity: 1, scale: 1, duration: .22, ease: "power2.out", immediateRender: false }, 30.70);
-      tl.to("#sg2", { opacity: 0, scale: 1.03, duration: .14, ease: "power2.in" }, 35.43);
-      tl.fromTo("#sc2", { opacity: 0 }, { opacity: 1, duration: .22, ease: "power2.out", immediateRender: false }, 30.70);
-      tl.to("#sc2", { opacity: 0, duration: .14, ease: "power2.in" }, 35.43);
-      tl.fromTo("#sg3", { opacity: 0, scale: 1.04 }, { opacity: 1, scale: 1, duration: .22, ease: "power2.out", immediateRender: false }, 35.57);
-      tl.to("#sg3", { opacity: 0, scale: 1.03, duration: .14, ease: "power2.in" }, 66.62);
-      tl.fromTo("#sg3b", { opacity: 0 }, { opacity: 1, duration: .22, ease: "power2.out", immediateRender: false }, 35.57);
-      tl.to("#sg3b", { opacity: 0, duration: .14, ease: "power2.in" }, 66.62);
-      tl.fromTo("#sc3", { opacity: 0 }, { opacity: 1, duration: .22, ease: "power2.out", immediateRender: false }, 35.57);
-      tl.to("#sc3", { opacity: 0, duration: .14, ease: "power2.in" }, 66.62);
-      tl.fromTo("#sg4", { opacity: 0, scale: 1.04 }, { opacity: 1, scale: 1, duration: .22, ease: "power2.out", immediateRender: false }, 66.76);
-      tl.to("#sg4", { opacity: 0, scale: 1.03, duration: .14, ease: "power2.in" }, 89.86);
-      tl.fromTo("#sc4", { opacity: 0 }, { opacity: 1, duration: .22, ease: "power2.out", immediateRender: false }, 66.76);
-      tl.to("#sc4", { opacity: 0, duration: .14, ease: "power2.in" }, 89.86);
+      tl.to("#sc0", { opacity: 0, duration: .14, ease: "power2.in" }, 10.58);
+      tl.fromTo("#sg1", { opacity: 0 }, { opacity: 1, duration: .22, ease: "power2.out", immediateRender: false }, 10.72);
+      tl.to("#sg1", { opacity: 0, duration: .14, ease: "power2.in" }, 69.05);
+      tl.fromTo("#sg1b", { opacity: 0 }, { opacity: 1, duration: .22, ease: "power2.out", immediateRender: false }, 10.72);
+      tl.to("#sg1b", { opacity: 0, duration: .14, ease: "power2.in" }, 69.05);
+      tl.fromTo("#sc1", { opacity: 0 }, { opacity: 1, duration: .22, ease: "power2.out", immediateRender: false }, 10.72);
+      tl.to("#sc1", { opacity: 0, duration: .14, ease: "power2.in" }, 69.05);
+      tl.fromTo("#sg2", { opacity: 0 }, { opacity: 1, duration: .22, ease: "power2.out", immediateRender: false }, 69.19);
+      tl.to("#sg2", { opacity: 0, duration: .14, ease: "power2.in" }, 89.86);
+      tl.fromTo("#sc2", { opacity: 0 }, { opacity: 1, duration: .22, ease: "power2.out", immediateRender: false }, 69.19);
+      tl.to("#sc2", { opacity: 0, duration: .14, ease: "power2.in" }, 89.86);
       tl.fromTo("#cpl0", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 1.44);
       tl.to("#cap0", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 2.35);
       tl.fromTo("#cpl1", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 2.48);
@@ -559,7 +545,6 @@
       tl.fromTo("#blk0 .bnum", { opacity: 0, scale: 1.28 }, { opacity: 1, scale: 1, duration: .7, ease: "power3.out", immediateRender: false }, 9.52);
       tl.fromTo("#blk0 .bword", { opacity: 0, scale: .8 }, { opacity: 1, scale: 1, duration: .22, ease: "back.out(1.6)", immediateRender: false }, 9.55);
       tl.fromTo("#blk0 .brule", { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: .3, ease: "power3.out" }, 9.8);
-      tl.fromTo("#blk0 .bgroup", { scale: 1 }, { scale: 1.07, duration: 1.57, ease: "power1.out", immediateRender: false }, 9.5);
       tl.to("#blk0 .bword", { opacity: 0, duration: .12, ease: "power2.in" }, 10.94);
       tl.to("#blk0 .bnum", { opacity: 0, duration: .12, ease: "power2.in" }, 10.94);
       tl.to("#blk0 .brule", { opacity: 0, duration: .12, ease: "power2.in" }, 10.94);
@@ -567,7 +552,6 @@
       tl.fromTo("#blk1 .bnum", { opacity: 0, scale: 1.28 }, { opacity: 1, scale: 1, duration: .7, ease: "power3.out", immediateRender: false }, 29.43);
       tl.fromTo("#blk1 .bword", { opacity: 0, scale: .8 }, { opacity: 1, scale: 1, duration: .22, ease: "back.out(1.6)", immediateRender: false }, 29.46);
       tl.fromTo("#blk1 .brule", { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: .3, ease: "power3.out" }, 29.71);
-      tl.fromTo("#blk1 .bgroup", { scale: 1 }, { scale: 1.07, duration: 1.81, ease: "power1.out", immediateRender: false }, 29.41);
       tl.to("#blk1 .bword", { opacity: 0, duration: .12, ease: "power2.in" }, 31.09);
       tl.to("#blk1 .bnum", { opacity: 0, duration: .12, ease: "power2.in" }, 31.09);
       tl.to("#blk1 .brule", { opacity: 0, duration: .12, ease: "power2.in" }, 31.09);
@@ -575,12 +559,10 @@
       tl.fromTo("#blk2 .bnum", { opacity: 0, scale: 1.28 }, { opacity: 1, scale: 1, duration: .7, ease: "power3.out", immediateRender: false }, 52.62);
       tl.fromTo("#blk2 .bword", { opacity: 0, scale: .8 }, { opacity: 1, scale: 1, duration: .22, ease: "back.out(1.6)", immediateRender: false }, 52.65);
       tl.fromTo("#blk2 .brule", { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: .3, ease: "power3.out" }, 52.9);
-      tl.fromTo("#blk2 .bgroup", { scale: 1 }, { scale: 1.07, duration: 2, ease: "power1.out", immediateRender: false }, 52.6);
       tl.to("#blk2 .bword", { opacity: 0, duration: .12, ease: "power2.in" }, 54.47);
       tl.to("#blk2 .bnum", { opacity: 0, duration: .12, ease: "power2.in" }, 54.47);
       tl.to("#blk2 .brule", { opacity: 0, duration: .12, ease: "power2.in" }, 54.47);
       tl.fromTo("#cta .endcard", { opacity: 0 }, { opacity: 1, duration: .3, ease: "power2.out", immediateRender: false }, 84.6);
-      tl.fromTo("#cta .end-big", { opacity: 0, scale: .6 }, { opacity: 1, scale: 1, duration: .4, ease: "back.out(1.8)", immediateRender: false }, 84.65);
       tl.seek(0);
     </script>
   </body>

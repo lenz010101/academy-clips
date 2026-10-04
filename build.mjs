@@ -15,13 +15,12 @@ const isHL = (w) => HLRE.test(w.replace(/[.,!?¿¡]/g, ""));
 
 // ---- Segmentos visuales: del take, solo donde se ve al joven o la pantalla ----
 // type: "face" (joven a cámara) | "screen" (explica un tema mirando la compu)
-// off/end = tiempo EN EL TAKE (base.mp4 / clip base 1)
+// off/end = tiempo EN EL TAKE (verificado con sheet denso cada 2s:
+// cara 0-11, pantalla 11-71, cara 71-92.465)
 const SEGMENTS = [
-  { type: "face", off: 0.0, end: 8.6 },
-  { type: "screen", off: 8.6, end: 31.5 },
-  { type: "face", off: 31.5, end: 36.5 },
-  { type: "screen", off: 36.5, end: 68.5 },
-  { type: "face", off: 68.5, end: 92.465 },
+  { type: "face", off: 0.0, end: 11.0 },
+  { type: "screen", off: 11.0, end: 71.0, z: 1 },
+  { type: "face", off: 71.0, end: 92.465 },
 ];
 
 // ---- beats -> captions (1 frase corta por vez) ----
@@ -65,9 +64,11 @@ SEGMENTS.forEach((sg, i) => {
     // lienzo borroso PRIMERO (detras): la pantalla se ve completa y el fondo se rellena solo
     clips += `      <video id="sg${i}b" class="clip take blurbg" src="assets/vid/take.mp4#t=${off.toFixed(2)}" data-media-start="${off.toFixed(2)}" muted playsinline preload="auto" data-start="${tl0.toFixed(2)}" data-duration="${span}" data-playback-rate="${SRC_RATIO.toFixed(5)}"></video>\n`;
   }
-  clips += `      <video id="sg${i}" class="clip take ${sg.type}" src="assets/vid/take.mp4#t=${off.toFixed(2)}" data-media-start="${off.toFixed(2)}" muted playsinline preload="auto" data-start="${tl0.toFixed(2)}" data-duration="${span}" data-playback-rate="${SRC_RATIO.toFixed(5)}"></video>\n`;
-  tweens += `      tl.fromTo("#sg${i}", { opacity: 0, scale: 1.04 }, { opacity: 1, scale: 1, duration: .22, ease: "power2.out", immediateRender: false }, ${tl0.toFixed(2)});\n`;
-  tweens += `      tl.to("#sg${i}", { opacity: 0, scale: 1.03, duration: .14, ease: "power2.in" }, ${+(tl1 - 0.14).toFixed(2)});\n`;
+  // zoom FIJO 1.25x (estático, sin animación) en los tramos donde explica
+  const zcls = sg.z ? " z125" : "";
+  clips += `      <video id="sg${i}" class="clip take ${sg.type}${zcls}" src="assets/vid/take.mp4#t=${off.toFixed(2)}" data-media-start="${off.toFixed(2)}" muted playsinline preload="auto" data-start="${tl0.toFixed(2)}" data-duration="${span}" data-playback-rate="${SRC_RATIO.toFixed(5)}"></video>\n`;
+  tweens += `      tl.fromTo("#sg${i}", { opacity: 0 }, { opacity: 1, duration: .22, ease: "power2.out", immediateRender: false }, ${tl0.toFixed(2)});\n`;
+  tweens += `      tl.to("#sg${i}", { opacity: 0, duration: .14, ease: "power2.in" }, ${+(tl1 - 0.14).toFixed(2)});\n`;
   if (sg.type === "screen") {
     tweens += `      tl.fromTo("#sg${i}b", { opacity: 0 }, { opacity: 1, duration: .22, ease: "power2.out", immediateRender: false }, ${tl0.toFixed(2)});\n`;
     tweens += `      tl.to("#sg${i}b", { opacity: 0, duration: .14, ease: "power2.in" }, ${+(tl1 - 0.14).toFixed(2)});\n`;
@@ -118,17 +119,15 @@ let sfxClips = "";
     tweens += `      tl.fromTo("#blk${k} .bnum", { opacity: 0, scale: 1.28 }, { opacity: 1, scale: 1, duration: .7, ease: "power3.out", immediateRender: false }, ${+(t0 + 0.02).toFixed(2)});\n`;
     tweens += `      tl.fromTo("#blk${k} .bword", { opacity: 0, scale: .8 }, { opacity: 1, scale: 1, duration: .22, ease: "back.out(1.6)", immediateRender: false }, ${+(t0 + 0.05).toFixed(2)});\n`;
     tweens += `      tl.fromTo("#blk${k} .brule", { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: .3, ease: "power3.out" }, ${+(t0 + 0.3).toFixed(2)});\n`;
-    // zoom suave del conjunto (nítido: solo escala, sin blur)
-    tweens += `      tl.fromTo("#blk${k} .bgroup", { scale: 1 }, { scale: 1.07, duration: ${dur}, ease: "power1.out", immediateRender: false }, ${t0});\n`;
+    // (sin zoom de grupo: el video y las placas quedan estáticos)
     tweens += `      tl.to("#blk${k} .bword", { opacity: 0, duration: .12, ease: "power2.in" }, ${+(t0 + dur - 0.13).toFixed(2)});\n`;
     tweens += `      tl.to("#blk${k} .bnum", { opacity: 0, duration: .12, ease: "power2.in" }, ${+(t0 + dur - 0.13).toFixed(2)});\n`;
     tweens += `      tl.to("#blk${k} .brule", { opacity: 0, duration: .12, ease: "power2.in" }, ${+(t0 + dur - 0.13).toFixed(2)});\n`;
     sfxClips += `      <audio id="sfxp${k}" src="assets/sfx/whoosh-big.mp3" data-start="${t0}" data-duration="1.6" data-volume="0.8"></audio>\n`;
   });
 }
-const ctaClip = `      <div id="cta" class="clip" data-start="${ctaT}" data-duration="${+(TOTAL - ctaT).toFixed(2)}"><div class="endcard"><div class="end-kick">comentá la palabra</div><div class="end-big">GUÍA</div><div class="end-sub">y te la mando para recibirla</div></div></div>\n`;
+const ctaClip = `      <div id="cta" class="clip" data-start="${ctaT}" data-duration="${+(TOTAL - ctaT).toFixed(2)}"><div class="endcard"><div class="guia-box"><div class="end-kick">COMENTÁ</div><div class="end-big">GUÍA</div></div></div></div>\n`;
 tweens += `      tl.fromTo("#cta .endcard", { opacity: 0 }, { opacity: 1, duration: .3, ease: "power2.out", immediateRender: false }, ${ctaT});\n`;
-tweens += `      tl.fromTo("#cta .end-big", { opacity: 0, scale: .6 }, { opacity: 1, scale: 1, duration: .4, ease: "back.out(1.8)", immediateRender: false }, ${+(ctaT + 0.05).toFixed(2)});\n`;
 sfxClips += `      <audio id="sfxcta" src="assets/sfx/pop.mp3" data-start="${ctaT}" data-duration="0.62" data-volume="0.8"></audio>\n`;
 
 // ---- whoosh en cada corte de plano ----
@@ -161,6 +160,8 @@ const html = `<!doctype html>
       .take.face { object-fit: cover; }
       /* pantalla: completa y grande, fondo rellenado con lienzo borroso */
       .take.screen { object-fit: contain; object-position: center center; background: #000; }
+      /* zoom fijo 1.2x en explicación (moderado para mantener nitidez) */
+      .take.z125 { width: 1296px; height: 2304px; left: -108px; top: -192px; }
       .take.blurbg { left: -110px; top: -110px; width: 1300px; height: 2140px; object-fit: cover;
         filter: blur(62px) brightness(.5) saturate(1.3); border-radius: 0; }
       .scrim { background: linear-gradient(180deg, rgba(5,5,8,.66) 0%, rgba(5,5,8,.30) 30%, rgba(5,5,8,0) 50%); }
@@ -187,13 +188,14 @@ const html = `<!doctype html>
       .brule { position: relative; z-index: 1; width: 220px; height: 12px; border-radius: 6px;
         background: #D2401F; opacity: 0; transform-origin: center center; }
       .bflash { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; background: #D2401F; opacity: 0; z-index: 2; }
-      /* cartel final GUÍA */
-      .endcard { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; background: rgba(6,8,14,.88);
-        display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; opacity: 0; }
-      .end-kick { font-family: "Archivo", sans-serif; font-weight: 900; font-size: 40px; letter-spacing: 10px; color: #F6F3EC; }
-      .end-big { font-family: "Archivo", sans-serif; font-weight: 900; font-size: 290px; letter-spacing: -8px; color: #F6F3EC;
-        text-shadow: 0 6px 40px rgba(0,0,0,.6); }
-      .end-sub { font-family: "Archivo", sans-serif; font-weight: 900; font-size: 44px; color: #F6F3EC; }
+      /* cartelito rojo GUÍA (simple, sin placa fullscreen) */
+      .endcard { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px;
+        display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+        padding-bottom: 430px; opacity: 0; }
+      .guia-box { background: #D2401F; border-radius: 34px; padding: 30px 80px 36px; text-align: center;
+        box-shadow: 0 24px 60px rgba(0,0,0,.45); }
+      .end-kick { font-family: "Archivo", sans-serif; font-weight: 900; font-size: 34px; letter-spacing: 10px; color: #F6F3EC; }
+      .end-big { font-family: "Archivo", sans-serif; font-weight: 900; font-size: 150px; line-height: 1; letter-spacing: -4px; color: #F6F3EC; margin-top: 4px; }
     </style>
   </head>
   <body>
