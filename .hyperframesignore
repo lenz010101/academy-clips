@@ -1,0 +1,8 @@
+log*.txt
+snapshots/
+snapshots2/
+snapshots3/
+snapshots4/
+snapshots5/
+renders/
+renders-cloud/

@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="es" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Archivo"; src: url("assets/fonts/ArchivoBlack.woff2") format("woff2"); font-weight: 900; }
+      @font-face { font-family: "Playfair"; src: url("assets/fonts/PlayfairDisplay.woff2") format("woff2"); font-weight: 700; font-style: italic; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      .clip { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; }
+      /* joven a camara: full-bleed 9:16 */
+      .take.face { object-fit: cover; }
+      /* pantalla: completa y grande, fondo rellenado con lienzo borroso */
+      .take.screen { object-fit: contain; object-position: center center; background: #000; }
+      .take.blurbg { left: -110px; top: -110px; width: 1300px; height: 2140px; object-fit: cover;
+        filter: blur(62px) brightness(.5) saturate(1.3); border-radius: 0; }
+      .scrim { background: linear-gradient(180deg, rgba(5,5,8,.66) 0%, rgba(5,5,8,.30) 30%, rgba(5,5,8,0) 50%); }
+      .group { position: absolute; left: 0; width: 1080px; display: flex; flex-direction: column;
+        align-items: center; justify-content: flex-end; will-change: transform, opacity; }
+      .group.cc { top: 0; height: 700px; padding: 0 44px 40px; }
+      /* captions arriba del todo: la pantalla queda libre abajo (piso 800-1500) */
+      .group.cc.screen-cap { height: 300px; justify-content: flex-start; padding: 34px 44px 0; }
+      .lne { opacity: 0; text-align: center; line-height: 1.16; color: #F6F3EC;
+        font-family: "Archivo", sans-serif; font-weight: 900; letter-spacing: -1px;
+        text-shadow: 0 2px 10px rgba(0,0,0,.5); max-width: 992px; will-change: transform, opacity; }
+      .lne em { font-family: "Playfair", serif; font-style: italic; font-weight: 700; letter-spacing: -1px; }
+      /* captions sobre pantalla: sin pastilla (el pedido) — solo sombra suave */
+      .group.cc.screen-cap .lne { background: none; border-radius: 0; padding: 0; }
+      /* placas Paso N */
+      .clip.blk { background: #101010; }
+      .grot { font-family: "Archivo", sans-serif; font-weight: 900; }
+      .bgroup { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; display: flex;
+        flex-direction: column; align-items: center; justify-content: center; gap: 30px; }
+      .bword { color: #F6F3EC; font-size: 168px; letter-spacing: -4px; opacity: 0; position: relative; z-index: 1; will-change: transform, opacity; }
+      .bnum { position: absolute; left: 0; top: 50%; margin-top: -320px; width: 1080px; text-align: center;
+        font-size: 640px; line-height: 1; letter-spacing: -18px; color: transparent;
+        -webkit-text-stroke: 5px rgba(246,243,236,.15); opacity: 0; z-index: 0; will-change: transform, opacity; }
+      .brule { position: relative; z-index: 1; width: 220px; height: 12px; border-radius: 6px;
+        background: #D2401F; opacity: 0; transform-origin: center center; }
+      .bflash { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; background: #D2401F; opacity: 0; z-index: 2; }
+      /* cartel final GUÍA */
+      .endcard { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; background: rgba(6,8,14,.88);
+        display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; opacity: 0; }
+      .end-kick { font-family: "Archivo", sans-serif; font-weight: 900; font-size: 40px; letter-spacing: 10px; color: #F6F3EC; }
+      .end-big { font-family: "Archivo", sans-serif; font-weight: 900; font-size: 290px; letter-spacing: -8px; color: #F6F3EC;
+        text-shadow: 0 6px 40px rgba(0,0,0,.6); }
+      .end-sub { font-family: "Archivo", sans-serif; font-weight: 900; font-size: 44px; color: #F6F3EC; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="90" data-width="1080" data-height="1920">
+      <audio id="voice" src="assets/vo90.m4a" data-start="1.44" data-duration="88.56" data-media-start="1.44" data-playback-rate="1.00056"></audio>
+      <audio id="sfxp0" src="assets/sfx/whoosh-big.mp3" data-start="9.5" data-duration="1.6" data-volume="0.8"></audio>
+      <audio id="sfxp1" src="assets/sfx/whoosh-big.mp3" data-start="29.41" data-duration="1.6" data-volume="0.8"></audio>
+      <audio id="sfxp2" src="assets/sfx/whoosh-big.mp3" data-start="52.6" data-duration="1.6" data-volume="0.8"></audio>
+      <audio id="sfxcta" src="assets/sfx/pop.mp3" data-start="84.6" data-duration="0.62" data-volume="0.8"></audio>
+      <audio id="sfxw1" src="assets/sfx/whoosh.mp3" data-start="8.38" data-duration="0.51" data-volume="0.75"></audio>
+      <audio id="sfxw2" src="assets/sfx/whoosh.mp3" data-start="30.70" data-duration="0.51" data-volume="0.75"></audio>
+      <audio id="sfxw3" src="assets/sfx/whoosh.mp3" data-start="35.57" data-duration="0.51" data-volume="0.75"></audio>
+      <audio id="sfxw4" src="assets/sfx/whoosh.mp3" data-start="66.76" data-duration="0.51" data-volume="0.75"></audio>
+      <video id="sg0" class="clip take face" src="assets/vid/take.mp4#t=0.00" data-media-start="0.00" muted playsinline preload="auto" data-start="0.00" data-duration="8.38" data-playback-rate="1.02611"></video>
+      <div id="sc0" class="clip scrim" data-start="0.00" data-duration="8.38"></div>
+      <video id="sg1b" class="clip take blurbg" src="assets/vid/take.mp4#t=8.60" data-media-start="8.60" muted playsinline preload="auto" data-start="8.38" data-duration="22.32" data-playback-rate="1.02611"></video>
+      <video id="sg1" class="clip take screen" src="assets/vid/take.mp4#t=8.60" data-media-start="8.60" muted playsinline preload="auto" data-start="8.38" data-duration="22.32" data-playback-rate="1.02611"></video>
+      <div id="sc1" class="clip scrim" data-start="8.38" data-duration="22.32"></div>
+      <video id="sg2" class="clip take face" src="assets/vid/take.mp4#t=31.50" data-media-start="31.50" muted playsinline preload="auto" data-start="30.70" data-duration="4.87" data-playback-rate="1.02611"></video>
+      <div id="sc2" class="clip scrim" data-start="30.70" data-duration="4.87"></div>
+      <video id="sg3b" class="clip take blurbg" src="assets/vid/take.mp4#t=36.50" data-media-start="36.50" muted playsinline preload="auto" data-start="35.57" data-duration="31.19" data-playback-rate="1.02611"></video>
+      <video id="sg3" class="clip take screen" src="assets/vid/take.mp4#t=36.50" data-media-start="36.50" muted playsinline preload="auto" data-start="35.57" data-duration="31.19" data-playback-rate="1.02611"></video>
+      <div id="sc3" class="clip scrim" data-start="35.57" data-duration="31.19"></div>
+      <video id="sg4" class="clip take face" src="assets/vid/take.mp4#t=68.50" data-media-start="68.50" muted playsinline preload="auto" data-start="66.76" data-duration="23.24" data-playback-rate="1.02611"></video>
+      <div id="sc4" class="clip scrim" data-start="66.76" data-duration="23.24"></div>
+      <div id="cap0" class="clip" data-start="1.44" data-duration="1.01"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl0" style="font-size:112px"><span>Si</span> <span>tuviera</span> <span>una</span></div>
+      </div></div>
+      <div id="cap1" class="clip" data-start="2.48" data-duration="0.93"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl1" style="font-size:92px"><em>academia</em> <span>y</span> <span>quisiera</span></div>
+      </div></div>
+      <div id="cap2" class="clip" data-start="3.44" data-duration="0.85"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl2" style="font-size:92px"><span>conseguir</span> <span>más</span> <span>alumnos</span></div>
+      </div></div>
+      <div id="cap3" class="clip" data-start="4.32" data-duration="0.61"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl3" style="font-size:92px"><span>para</span> <span>mis</span> <span>cursos</span></div>
+      </div></div>
+      <div id="cap4" class="clip" data-start="4.96" data-duration="0.77"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl4" style="font-size:92px"><span>o</span> <span>formaciones,</span></div>
+      </div></div>
+      <div id="cap5" class="clip" data-start="5.76" data-duration="0.53"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl5" style="font-size:112px"><span>estos</span> <span>son</span> <span>los</span></div>
+      </div></div>
+      <div id="cap6" class="clip" data-start="6.32" data-duration="0.53"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl6" style="font-size:112px"><span>tres</span> <em>pasos</em> <span>que</span></div>
+      </div></div>
+      <div id="cap7" class="clip" data-start="6.88" data-duration="0.61"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl7" style="font-size:112px"><span>seguiría.</span></div>
+      </div></div>
+      <div id="cap8" class="clip" data-start="7.52" data-duration="0.61"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl8" style="font-size:112px"><span>Y</span> <span>el</span> <span>segundo</span></div>
+      </div></div>
+      <div id="cap9" class="clip" data-start="8.16" data-duration="0.92"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl9" style="font-size:92px"><span>es</span> <span>el</span> <span>más</span> <span>importante.</span></div>
+      </div></div>
+      <div id="cap10" class="clip" data-start="9.11" data-duration="1.04"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl10" style="font-size:112px"><span>Escuchá.</span></div>
+      </div></div>
+      <div id="cap12" class="clip" data-start="10.55" data-duration="0.61"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl12" style="font-size:112px"><span>vas</span> <span>a</span> <span>generar</span></div>
+      </div></div>
+      <div id="cap13" class="clip" data-start="11.19" data-duration="1.01"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl13" style="font-size:112px"><span>no</span> <span>uno</span> <span>ni</span> <span>dos,</span></div>
+      </div></div>
+      <div id="cap14" class="clip" data-start="12.23" data-duration="1.17"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl14" style="font-size:92px"><span>sino</span> <span>cuatro</span> <em>guiones</em></div>
+      </div></div>
+      <div id="cap15" class="clip" data-start="13.43" data-duration="0.85"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl15" style="font-size:92px"><span>para</span> <span>hacer</span> <span>videos</span></div>
+      </div></div>
+      <div id="cap16" class="clip" data-start="14.31" data-duration="1.09"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl16" style="font-size:76px"><span>contando</span> <span>del</span> <span>lanzamiento</span></div>
+      </div></div>
+      <div id="cap17" class="clip" data-start="15.43" data-duration="0.53"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl17" style="font-size:112px"><span>de</span> <span>tu</span> <span>curso.</span></div>
+      </div></div>
+      <div id="cap18" class="clip" data-start="15.99" data-duration="0.53"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl18" style="font-size:112px"><span>Para</span> <span>hacerlo,</span></div>
+      </div></div>
+      <div id="cap19" class="clip" data-start="16.55" data-duration="0.93"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl19" style="font-size:76px"><span>utilizaría</span> <span>esta</span> <em>herramienta</em></div>
+      </div></div>
+      <div id="cap20" class="clip" data-start="17.51" data-duration="1.01"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl20" style="font-size:76px"><span>de</span> <span>inteligencia</span> <span>artificial,</span></div>
+      </div></div>
+      <div id="cap21" class="clip" data-start="18.55" data-duration="0.85"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl21" style="font-size:92px"><span>que</span> <span>colocando</span> <span>algunos</span></div>
+      </div></div>
+      <div id="cap22" class="clip" data-start="19.43" data-duration="0.77"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl22" style="font-size:92px"><span>datos</span> <span>sobre</span> <span>el</span> <span>curso</span> <span>y</span> <span>la</span></div>
+      </div></div>
+      <div id="cap23" class="clip" data-start="20.23" data-duration="0.77"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl23" style="font-size:92px"><em>academia,</em> <span>vas</span> <span>a</span> <span>poder</span></div>
+      </div></div>
+      <div id="cap24" class="clip" data-start="21.03" data-duration="0.85"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl24" style="font-size:92px"><span>generar</span> <span>en</span> <span>automático</span></div>
+      </div></div>
+      <div id="cap25" class="clip" data-start="21.91" data-duration="0.69"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl25" style="font-size:92px"><span>cuatro</span> <em>guiones</em> <span>que</span></div>
+      </div></div>
+      <div id="cap26" class="clip" data-start="22.63" data-duration="1.09"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl26" style="font-size:76px"><span>ya</span> <span>están</span> <span>validados</span> <span>en</span> <span>más</span> <span>de</span></div>
+      </div></div>
+      <div id="cap27" class="clip" data-start="23.75" data-duration="0.77"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl27" style="font-size:112px"><span>20</span> <span>academias,</span></div>
+      </div></div>
+      <div id="cap28" class="clip" data-start="24.55" data-duration="0.61"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl28" style="font-size:92px"><span>con</span> <span>una</span> <span>estructura</span></div>
+      </div></div>
+      <div id="cap29" class="clip" data-start="25.19" data-duration="0.53"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl29" style="font-size:92px"><span>que</span> <span>convierte.</span></div>
+      </div></div>
+      <div id="cap30" class="clip" data-start="25.75" data-duration="0.93"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl30" style="font-size:92px"><span>Si</span> <span>querés</span> <span>el</span> <span>acceso</span> <span>a</span> <span>esa</span></div>
+      </div></div>
+      <div id="cap31" class="clip" data-start="26.71" data-duration="0.84"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl31" style="font-size:76px"><em>herramienta</em> <span>totalmente</span> <em>gratis,</em></div>
+      </div></div>
+      <div id="cap32" class="clip" data-start="27.58" data-duration="0.93"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl32" style="font-size:92px"><span>comenta</span> <em>guión</em> <span>y</span></div>
+      </div></div>
+      <div id="cap33" class="clip" data-start="28.54" data-duration="1.28"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl33" style="font-size:92px"><span>te</span> <span>llega</span> <span>en</span> <span>un</span> <span>minuto.</span></div>
+      </div></div>
+      <div id="cap35" class="clip" data-start="30.7" data-duration="0.61"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl35" style="font-size:92px"><span>a</span> <em>administrador</em> <span>de</span></div>
+      </div></div>
+      <div id="cap36" class="clip" data-start="31.34" data-duration="1.01"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl36" style="font-size:76px"><em>anuncios</em> <span>de</span> <span>meta</span> <span>y</span> <span>vamos</span> <span>a</span></div>
+      </div></div>
+      <div id="cap37" class="clip" data-start="32.38" data-duration="0.77"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl37" style="font-size:92px"><span>crear</span> <span>una</span> <em>campaña</em></div>
+      </div></div>
+      <div id="cap38" class="clip" data-start="33.18" data-duration="1.25"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl38" style="font-size:76px"><span>de</span> <em>clientes</em> <em>potenciales,</em></div>
+      </div></div>
+      <div id="cap39" class="clip" data-start="34.46" data-duration="1.01"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl39" style="font-size:92px"><span>no</span> <span>de</span> <span>interacción.</span></div>
+      </div></div>
+      <div id="cap40" class="clip" data-start="35.5" data-duration="1.09"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl40" style="font-size:76px"><span>Esto</span> <span>quiere</span> <span>decir</span> <span>que</span> <span>no</span> <span>vamos</span></div>
+      </div></div>
+      <div id="cap41" class="clip" data-start="36.62" data-duration="0.85"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl41" style="font-size:92px"><span>a</span> <span>recibir</span> <span>directamente</span></div>
+      </div></div>
+      <div id="cap42" class="clip" data-start="37.5" data-duration="0.93"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl42" style="font-size:92px"><span>mensajes</span> <span>a</span> <em>WhatsApp</em></div>
+      </div></div>
+      <div id="cap43" class="clip" data-start="38.46" data-duration="0.53"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl43" style="font-size:112px"><span>con</span> <span>un</span> <span>montón</span></div>
+      </div></div>
+      <div id="cap44" class="clip" data-start="39.02" data-duration="0.53"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl44" style="font-size:92px"><span>de</span> <span>consultas</span> <span>que</span></div>
+      </div></div>
+      <div id="cap45" class="clip" data-start="39.58" data-duration="0.93"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl45" style="font-size:76px"><span>solamente</span> <span>preguntan</span> <span>precios</span></div>
+      </div></div>
+      <div id="cap46" class="clip" data-start="40.54" data-duration="1.33"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl46" style="font-size:62px"><span>y</span> <span>después</span> <span>desaparecen,</span> <span>sino</span> <span>que</span> <span>vamos</span></div>
+      </div></div>
+      <div id="cap47" class="clip" data-start="41.9" data-duration="0.93"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl47" style="font-size:76px"><span>a</span> <span>llevarlos</span> <span>a</span> <span>un</span> <span>sitio</span> <span>web</span></div>
+      </div></div>
+      <div id="cap48" class="clip" data-start="42.86" data-duration="0.53"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl48" style="font-size:92px"><span>para</span> <span>que</span> <span>lleguen</span></div>
+      </div></div>
+      <div id="cap49" class="clip" data-start="43.42" data-duration="0.69"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl49" style="font-size:92px"><span>un</span> <em>formulario</em> <span>y</span></div>
+      </div></div>
+      <div id="cap50" class="clip" data-start="44.14" data-duration="0.77"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl50" style="font-size:92px"><span>vamos</span> <span>a</span> <span>filtrarlos</span></div>
+      </div></div>
+      <div id="cap51" class="clip" data-start="44.94" data-duration="0.76"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl51" style="font-size:92px"><span>y</span> <span>nutrirlos</span> <span>para</span></div>
+      </div></div>
+      <div id="cap52" class="clip" data-start="45.73" data-duration="1.09"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl52" style="font-size:76px"><span>que</span> <span>solamente</span> <span>consigamos</span></div>
+      </div></div>
+      <div id="cap53" class="clip" data-start="46.85" data-duration="1.17"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl53" style="font-size:92px"><span>gente</span> <span>calificada</span> <span>que</span></div>
+      </div></div>
+      <div id="cap54" class="clip" data-start="48.05" data-duration="0.53"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl54" style="font-size:112px"><span>después</span> <span>va</span> <span>a</span></div>
+      </div></div>
+      <div id="cap55" class="clip" data-start="48.61" data-duration="1.41"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl55" style="font-size:76px"><span>retroalimentar</span> <span>la</span> <em>campaña</em></div>
+      </div></div>
+      <div id="cap56" class="clip" data-start="50.05" data-duration="0.85"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl56" style="font-size:92px"><span>para</span> <span>que</span> <span>consiga</span></div>
+      </div></div>
+      <div id="cap57" class="clip" data-start="50.93" data-duration="1.17"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl57" style="font-size:92px"><span>aún</span> <span>mejores</span> <span>perfiles</span></div>
+      </div></div>
+      <div id="cap58" class="clip" data-start="52.13" data-duration="1.12"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl58" style="font-size:112px"><span>con</span> <span>el</span> <span>tiempo.</span></div>
+      </div></div>
+      <div id="cap60" class="clip" data-start="54.21" data-duration="0.69"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl60" style="font-size:92px"><span>comunicar</span> <span>con</span> <span>cada</span></div>
+      </div></div>
+      <div id="cap61" class="clip" data-start="54.93" data-duration="0.53"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl61" style="font-size:112px"><span>uno</span> <span>de</span> <span>todos</span></div>
+      </div></div>
+      <div id="cap62" class="clip" data-start="55.49" data-duration="0.77"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl62" style="font-size:92px"><span>los</span> <span>interesados</span> <span>de</span></div>
+      </div></div>
+      <div id="cap63" class="clip" data-start="56.29" data-duration="1.01"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl63" style="font-size:76px"><span>forma</span> <span>automática,</span> <span>a</span> <span>través</span> <span>de</span></div>
+      </div></div>
+      <div id="cap64" class="clip" data-start="57.33" data-duration="0.53"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl64" style="font-size:92px"><span>este</span> <em>sistema</em> <span>de</span></div>
+      </div></div>
+      <div id="cap65" class="clip" data-start="57.89" data-duration="0.98"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl65" style="font-size:92px"><em>automatizaciones.</em></div>
+      </div></div>
+      <div id="cap66" class="clip" data-start="58.9" data-duration="0.93"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl66" style="font-size:76px"><span>Para</span> <span>que</span> <span>converse</span> <span>con</span> <span>ellos,</span></div>
+      </div></div>
+      <div id="cap67" class="clip" data-start="59.86" data-duration="1.25"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl67" style="font-size:76px"><span>responda</span> <span>sus</span> <span>dudas</span> <span>y</span> <span>les</span> <span>haga</span></div>
+      </div></div>
+      <div id="cap68" class="clip" data-start="61.14" data-duration="1.01"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl68" style="font-size:76px"><span>seguimientos</span> <span>hasta</span> <span>estén</span></div>
+      </div></div>
+      <div id="cap69" class="clip" data-start="62.18" data-duration="0.84"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl69" style="font-size:92px"><span>listos</span> <span>para</span> <span>comprar.</span></div>
+      </div></div>
+      <div id="cap70" class="clip" data-start="63.05" data-duration="0.85"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl70" style="font-size:92px"><span>Una</span> <span>vez</span> <span>que</span> <span>la</span> <span>persona</span> <span>se</span></div>
+      </div></div>
+      <div id="cap71" class="clip" data-start="63.93" data-duration="0.69"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl71" style="font-size:92px"><span>quiere</span> <em>inscribir,</em></div>
+      </div></div>
+      <div id="cap72" class="clip" data-start="64.65" data-duration="0.69"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl72" style="font-size:92px"><span>recién</span> <span>ahí</span> <span>vamos</span></div>
+      </div></div>
+      <div id="cap73" class="clip" data-start="65.37" data-duration="0.61"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl73" style="font-size:112px"><span>a</span> <span>pasarle</span> <span>tu</span></div>
+      </div></div>
+      <div id="cap74" class="clip" data-start="66.01" data-duration="0.77"><div class="group cc screen-cap" data-layout-allow-overlap>
+        <div class="lne" id="cpl74" style="font-size:92px"><em>contacto</em> <span>para</span> <span>que</span></div>
+      </div></div>
+      <div id="cap75" class="clip" data-start="66.81" data-duration="1.33"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl75" style="font-size:62px"><span>gestiones</span> <span>la</span> <em>inscripción</em> <span>y</span> <span>el</span> <span>tema</span></div>
+      </div></div>
+      <div id="cap76" class="clip" data-start="68.17" data-duration="1.33"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl76" style="font-size:92px"><span>del</span> <span>pago.</span> <span>No</span> <span>antes.</span></div>
+      </div></div>
+      <div id="cap77" class="clip" data-start="69.53" data-duration="1.17"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl77" style="font-size:76px"><span>Las</span> <span>academias</span> <span>que</span> <span>hoy</span> <span>no</span> <span>están</span></div>
+      </div></div>
+      <div id="cap78" class="clip" data-start="70.73" data-duration="1.09"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl78" style="font-size:62px"><span>implementando</span> <span>un</span> <em>sistema</em> <span>como</span> <span>este,</span></div>
+      </div></div>
+      <div id="cap79" class="clip" data-start="71.85" data-duration="0.77"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl79" style="font-size:92px"><span>para</span> <span>poder</span> <span>filtrar</span></div>
+      </div></div>
+      <div id="cap80" class="clip" data-start="72.65" data-duration="0.61"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl80" style="font-size:92px"><span>sus</span> <span>contactos,</span></div>
+      </div></div>
+      <div id="cap81" class="clip" data-start="73.29" data-duration="0.69"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl81" style="font-size:92px"><span>pasan</span> <span>un</span> <span>montón</span></div>
+      </div></div>
+      <div id="cap82" class="clip" data-start="74.01" data-duration="0.77"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl82" style="font-size:92px"><span>de</span> <span>tiempo</span> <span>respondiendo</span></div>
+      </div></div>
+      <div id="cap83" class="clip" data-start="74.81" data-duration="1.25"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl83" style="font-size:76px"><span>a</span> <span>consultas</span> <span>de</span> <span>personas</span> <span>que</span> <span>solo</span></div>
+      </div></div>
+      <div id="cap84" class="clip" data-start="76.09" data-duration="1.25"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl84" style="font-size:62px"><span>quieren</span> <span>saber</span> <span>precio</span> <span>o</span> <span>ni</span> <span>siquiera</span></div>
+      </div></div>
+      <div id="cap85" class="clip" data-start="77.37" data-duration="0.85"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl85" style="font-size:92px"><span>saben</span> <span>de</span> <span>que</span> <span>se</span> <span>trata</span> <span>el</span></div>
+      </div></div>
+      <div id="cap86" class="clip" data-start="78.25" data-duration="0.69"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl86" style="font-size:112px"><span>curso</span> <span>y</span> <span>casi</span></div>
+      </div></div>
+      <div id="cap87" class="clip" data-start="78.97" data-duration="1.41"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl87" style="font-size:62px"><span>nunca</span> <span>logran</span> <span>conseguir</span> <span>el</span> <span>número</span> <span>de</span></div>
+      </div></div>
+      <div id="cap88" class="clip" data-start="80.41" data-duration="0.6"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl88" style="font-size:92px"><span>alumnos</span> <span>que</span> <span>les</span></div>
+      </div></div>
+      <div id="cap89" class="clip" data-start="81.04" data-duration="0.61"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl89" style="font-size:92px"><span>gustaría</span> <span>para</span> <span>sus</span></div>
+      </div></div>
+      <div id="cap90" class="clip" data-start="81.68" data-duration="1.17"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl90" style="font-size:92px"><span>cursos</span> <span>o</span> <span>formaciones.</span></div>
+      </div></div>
+      <div id="cap91" class="clip" data-start="82.88" data-duration="0.85"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl91" style="font-size:92px"><span>Si</span> <span>te</span> <span>está</span> <span>pasando</span> <span>esto,</span></div>
+      </div></div>
+      <div id="cap92" class="clip" data-start="83.76" data-duration="0.69"><div class="group cc" data-layout-allow-overlap>
+        <div class="lne" id="cpl92" style="font-size:92px"><span>coméntame</span> <span>acá</span> <span>abajo</span></div>
+      </div></div>
+      <div id="blk0" class="clip blk" data-layout-allow-overlap data-start="9.5" data-duration="1.57"><div class="bgroup" data-layout-allow-overlap><div class="bnum grot" data-layout-allow-overlap>01</div><div class="bword grot" data-layout-allow-overlap>Paso 1</div><div class="brule"></div></div><div class="bflash"></div></div>
+      <div id="blk1" class="clip blk" data-layout-allow-overlap data-start="29.41" data-duration="1.81"><div class="bgroup" data-layout-allow-overlap><div class="bnum grot" data-layout-allow-overlap>02</div><div class="bword grot" data-layout-allow-overlap>Paso 2</div><div class="brule"></div></div><div class="bflash"></div></div>
+      <div id="blk2" class="clip blk" data-layout-allow-overlap data-start="52.6" data-duration="2"><div class="bgroup" data-layout-allow-overlap><div class="bnum grot" data-layout-allow-overlap>03</div><div class="bword grot" data-layout-allow-overlap>Paso 3</div><div class="brule"></div></div><div class="bflash"></div></div>
+      <div id="cta" class="clip" data-start="84.6" data-duration="5.4"><div class="endcard"><div class="end-kick">comentá la palabra</div><div class="end-big">GUÍA</div><div class="end-sub">y te la mando para recibirla</div></div></div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      window.__timelines["main"] = tl;
+      tl.fromTo("#sg0", { opacity: 0, scale: 1.04 }, { opacity: 1, scale: 1, duration: .22, ease: "power2.out", immediateRender: false }, 0.00);
+      tl.to("#sg0", { opacity: 0, scale: 1.03, duration: .14, ease: "power2.in" }, 8.24);
+      tl.fromTo("#sc0", { opacity: 0 }, { opacity: 1, duration: .22, ease: "power2.out", immediateRender: false }, 0.00);
+      tl.to("#sc0", { opacity: 0, duration: .14, ease: "power2.in" }, 8.24);
+      tl.fromTo("#sg1", { opacity: 0, scale: 1.04 }, { opacity: 1, scale: 1, duration: .22, ease: "power2.out", immediateRender: false }, 8.38);
+      tl.to("#sg1", { opacity: 0, scale: 1.03, duration: .14, ease: "power2.in" }, 30.56);
+      tl.fromTo("#sg1b", { opacity: 0 }, { opacity: 1, duration: .22, ease: "power2.out", immediateRender: false }, 8.38);
+      tl.to("#sg1b", { opacity: 0, duration: .14, ease: "power2.in" }, 30.56);
+      tl.fromTo("#sc1", { opacity: 0 }, { opacity: 1, duration: .22, ease: "power2.out", immediateRender: false }, 8.38);
+      tl.to("#sc1", { opacity: 0, duration: .14, ease: "power2.in" }, 30.56);
+      tl.fromTo("#sg2", { opacity: 0, scale: 1.04 }, { opacity: 1, scale: 1, duration: .22, ease: "power2.out", immediateRender: false }, 30.70);
+      tl.to("#sg2", { opacity: 0, scale: 1.03, duration: .14, ease: "power2.in" }, 35.43);
+      tl.fromTo("#sc2", { opacity: 0 }, { opacity: 1, duration: .22, ease: "power2.out", immediateRender: false }, 30.70);
+      tl.to("#sc2", { opacity: 0, duration: .14, ease: "power2.in" }, 35.43);
+      tl.fromTo("#sg3", { opacity: 0, scale: 1.04 }, { opacity: 1, scale: 1, duration: .22, ease: "power2.out", immediateRender: false }, 35.57);
+      tl.to("#sg3", { opacity: 0, scale: 1.03, duration: .14, ease: "power2.in" }, 66.62);
+      tl.fromTo("#sg3b", { opacity: 0 }, { opacity: 1, duration: .22, ease: "power2.out", immediateRender: false }, 35.57);
+      tl.to("#sg3b", { opacity: 0, duration: .14, ease: "power2.in" }, 66.62);
+      tl.fromTo("#sc3", { opacity: 0 }, { opacity: 1, duration: .22, ease: "power2.out", immediateRender: false }, 35.57);
+      tl.to("#sc3", { opacity: 0, duration: .14, ease: "power2.in" }, 66.62);
+      tl.fromTo("#sg4", { opacity: 0, scale: 1.04 }, { opacity: 1, scale: 1, duration: .22, ease: "power2.out", immediateRender: false }, 66.76);
+      tl.to("#sg4", { opacity: 0, scale: 1.03, duration: .14, ease: "power2.in" }, 89.86);
+      tl.fromTo("#sc4", { opacity: 0 }, { opacity: 1, duration: .22, ease: "power2.out", immediateRender: false }, 66.76);
+      tl.to("#sc4", { opacity: 0, duration: .14, ease: "power2.in" }, 89.86);
+      tl.fromTo("#cpl0", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 1.44);
+      tl.to("#cap0", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 2.35);
+      tl.fromTo("#cpl1", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 2.48);
+      tl.to("#cap1", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 3.31);
+      tl.fromTo("#cpl2", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 3.44);
+      tl.to("#cap2", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 4.19);
+      tl.fromTo("#cpl3", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 4.32);
+      tl.to("#cap3", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 4.83);
+      tl.fromTo("#cpl4", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 4.96);
+      tl.to("#cap4", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 5.63);
+      tl.fromTo("#cpl5", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 5.76);
+      tl.to("#cap5", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 6.19);
+      tl.fromTo("#cpl6", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 6.32);
+      tl.to("#cap6", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 6.75);
+      tl.fromTo("#cpl7", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 6.88);
+      tl.to("#cap7", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 7.39);
+      tl.fromTo("#cpl8", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 7.52);
+      tl.to("#cap8", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 8.03);
+      tl.fromTo("#cpl9", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 8.16);
+      tl.to("#cap9", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 8.98);
+      tl.fromTo("#cpl10", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 9.11);
+      tl.to("#cap10", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 10.05);
+      tl.fromTo("#cpl12", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 10.55);
+      tl.to("#cap12", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 11.06);
+      tl.fromTo("#cpl13", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 11.19);
+      tl.to("#cap13", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 12.1);
+      tl.fromTo("#cpl14", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 12.23);
+      tl.to("#cap14", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 13.3);
+      tl.fromTo("#cpl15", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 13.43);
+      tl.to("#cap15", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 14.18);
+      tl.fromTo("#cpl16", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 14.31);
+      tl.to("#cap16", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 15.3);
+      tl.fromTo("#cpl17", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 15.43);
+      tl.to("#cap17", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 15.86);
+      tl.fromTo("#cpl18", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 15.99);
+      tl.to("#cap18", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 16.42);
+      tl.fromTo("#cpl19", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 16.55);
+      tl.to("#cap19", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 17.38);
+      tl.fromTo("#cpl20", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 17.51);
+      tl.to("#cap20", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 18.42);
+      tl.fromTo("#cpl21", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 18.55);
+      tl.to("#cap21", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 19.3);
+      tl.fromTo("#cpl22", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 19.43);
+      tl.to("#cap22", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 20.1);
+      tl.fromTo("#cpl23", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 20.23);
+      tl.to("#cap23", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 20.9);
+      tl.fromTo("#cpl24", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 21.03);
+      tl.to("#cap24", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 21.78);
+      tl.fromTo("#cpl25", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 21.91);
+      tl.to("#cap25", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 22.5);
+      tl.fromTo("#cpl26", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 22.63);
+      tl.to("#cap26", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 23.62);
+      tl.fromTo("#cpl27", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 23.75);
+      tl.to("#cap27", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 24.42);
+      tl.fromTo("#cpl28", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 24.55);
+      tl.to("#cap28", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 25.06);
+      tl.fromTo("#cpl29", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 25.19);
+      tl.to("#cap29", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 25.62);
+      tl.fromTo("#cpl30", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 25.75);
+      tl.to("#cap30", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 26.58);
+      tl.fromTo("#cpl31", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 26.71);
+      tl.to("#cap31", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 27.45);
+      tl.fromTo("#cpl32", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 27.58);
+      tl.to("#cap32", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 28.41);
+      tl.fromTo("#cpl33", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 28.54);
+      tl.to("#cap33", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 29.72);
+      tl.fromTo("#cpl35", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 30.7);
+      tl.to("#cap35", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 31.21);
+      tl.fromTo("#cpl36", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 31.34);
+      tl.to("#cap36", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 32.25);
+      tl.fromTo("#cpl37", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 32.38);
+      tl.to("#cap37", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 33.05);
+      tl.fromTo("#cpl38", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 33.18);
+      tl.to("#cap38", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 34.33);
+      tl.fromTo("#cpl39", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 34.46);
+      tl.to("#cap39", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 35.37);
+      tl.fromTo("#cpl40", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 35.5);
+      tl.to("#cap40", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 36.49);
+      tl.fromTo("#cpl41", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 36.62);
+      tl.to("#cap41", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 37.37);
+      tl.fromTo("#cpl42", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 37.5);
+      tl.to("#cap42", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 38.33);
+      tl.fromTo("#cpl43", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 38.46);
+      tl.to("#cap43", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 38.89);
+      tl.fromTo("#cpl44", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 39.02);
+      tl.to("#cap44", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 39.45);
+      tl.fromTo("#cpl45", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 39.58);
+      tl.to("#cap45", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 40.41);
+      tl.fromTo("#cpl46", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 40.54);
+      tl.to("#cap46", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 41.77);
+      tl.fromTo("#cpl47", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 41.9);
+      tl.to("#cap47", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 42.73);
+      tl.fromTo("#cpl48", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 42.86);
+      tl.to("#cap48", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 43.29);
+      tl.fromTo("#cpl49", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 43.42);
+      tl.to("#cap49", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 44.01);
+      tl.fromTo("#cpl50", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 44.14);
+      tl.to("#cap50", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 44.81);
+      tl.fromTo("#cpl51", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 44.94);
+      tl.to("#cap51", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 45.6);
+      tl.fromTo("#cpl52", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 45.73);
+      tl.to("#cap52", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 46.72);
+      tl.fromTo("#cpl53", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 46.85);
+      tl.to("#cap53", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 47.92);
+      tl.fromTo("#cpl54", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 48.05);
+      tl.to("#cap54", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 48.48);
+      tl.fromTo("#cpl55", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 48.61);
+      tl.to("#cap55", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 49.92);
+      tl.fromTo("#cpl56", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 50.05);
+      tl.to("#cap56", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 50.8);
+      tl.fromTo("#cpl57", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 50.93);
+      tl.to("#cap57", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 52);
+      tl.fromTo("#cpl58", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 52.13);
+      tl.to("#cap58", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 53.15);
+      tl.fromTo("#cpl60", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 54.21);
+      tl.to("#cap60", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 54.8);
+      tl.fromTo("#cpl61", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 54.93);
+      tl.to("#cap61", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 55.36);
+      tl.fromTo("#cpl62", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 55.49);
+      tl.to("#cap62", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 56.16);
+      tl.fromTo("#cpl63", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 56.29);
+      tl.to("#cap63", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 57.2);
+      tl.fromTo("#cpl64", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 57.33);
+      tl.to("#cap64", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 57.76);
+      tl.fromTo("#cpl65", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 57.89);
+      tl.to("#cap65", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 58.77);
+      tl.fromTo("#cpl66", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 58.9);
+      tl.to("#cap66", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 59.73);
+      tl.fromTo("#cpl67", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 59.86);
+      tl.to("#cap67", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 61.01);
+      tl.fromTo("#cpl68", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 61.14);
+      tl.to("#cap68", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 62.05);
+      tl.fromTo("#cpl69", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 62.18);
+      tl.to("#cap69", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 62.92);
+      tl.fromTo("#cpl70", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 63.05);
+      tl.to("#cap70", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 63.8);
+      tl.fromTo("#cpl71", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 63.93);
+      tl.to("#cap71", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 64.52);
+      tl.fromTo("#cpl72", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 64.65);
+      tl.to("#cap72", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 65.24);
+      tl.fromTo("#cpl73", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 65.37);
+      tl.to("#cap73", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 65.88);
+      tl.fromTo("#cpl74", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 66.01);
+      tl.to("#cap74", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 66.68);
+      tl.fromTo("#cpl75", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 66.81);
+      tl.to("#cap75", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 68.04);
+      tl.fromTo("#cpl76", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 68.17);
+      tl.to("#cap76", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 69.4);
+      tl.fromTo("#cpl77", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 69.53);
+      tl.to("#cap77", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 70.6);
+      tl.fromTo("#cpl78", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 70.73);
+      tl.to("#cap78", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 71.72);
+      tl.fromTo("#cpl79", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 71.85);
+      tl.to("#cap79", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 72.52);
+      tl.fromTo("#cpl80", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 72.65);
+      tl.to("#cap80", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 73.16);
+      tl.fromTo("#cpl81", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 73.29);
+      tl.to("#cap81", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 73.88);
+      tl.fromTo("#cpl82", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 74.01);
+      tl.to("#cap82", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 74.68);
+      tl.fromTo("#cpl83", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 74.81);
+      tl.to("#cap83", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 75.96);
+      tl.fromTo("#cpl84", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 76.09);
+      tl.to("#cap84", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 77.24);
+      tl.fromTo("#cpl85", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 77.37);
+      tl.to("#cap85", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 78.12);
+      tl.fromTo("#cpl86", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 78.25);
+      tl.to("#cap86", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 78.84);
+      tl.fromTo("#cpl87", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 78.97);
+      tl.to("#cap87", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 80.28);
+      tl.fromTo("#cpl88", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 80.41);
+      tl.to("#cap88", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 80.91);
+      tl.fromTo("#cpl89", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 81.04);
+      tl.to("#cap89", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 81.55);
+      tl.fromTo("#cpl90", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 81.68);
+      tl.to("#cap90", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 82.75);
+      tl.fromTo("#cpl91", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 82.88);
+      tl.to("#cap91", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 83.63);
+      tl.fromTo("#cpl92", { opacity: 0, scale: .82, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: .2, ease: "back.out(2.2)", immediateRender: false }, 83.76);
+      tl.to("#cap92", { opacity: 0, y: -14, duration: .1, ease: "power2.in" }, 84.35);      tl.fromTo("#blk0 .bflash", { opacity: .95 }, { opacity: 0, duration: .26, ease: "power2.out", immediateRender: false }, 9.5);
+      tl.fromTo("#blk0 .bnum", { opacity: 0, scale: 1.28 }, { opacity: 1, scale: 1, duration: .7, ease: "power3.out", immediateRender: false }, 9.52);
+      tl.fromTo("#blk0 .bword", { opacity: 0, scale: .8 }, { opacity: 1, scale: 1, duration: .22, ease: "back.out(1.6)", immediateRender: false }, 9.55);
+      tl.fromTo("#blk0 .brule", { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: .3, ease: "power3.out" }, 9.8);
+      tl.fromTo("#blk0 .bgroup", { scale: 1 }, { scale: 1.07, duration: 1.57, ease: "power1.out", immediateRender: false }, 9.5);
+      tl.to("#blk0 .bword", { opacity: 0, duration: .12, ease: "power2.in" }, 10.94);
+      tl.to("#blk0 .bnum", { opacity: 0, duration: .12, ease: "power2.in" }, 10.94);
+      tl.to("#blk0 .brule", { opacity: 0, duration: .12, ease: "power2.in" }, 10.94);
+      tl.fromTo("#blk1 .bflash", { opacity: .95 }, { opacity: 0, duration: .26, ease: "power2.out", immediateRender: false }, 29.41);
+      tl.fromTo("#blk1 .bnum", { opacity: 0, scale: 1.28 }, { opacity: 1, scale: 1, duration: .7, ease: "power3.out", immediateRender: false }, 29.43);
+      tl.fromTo("#blk1 .bword", { opacity: 0, scale: .8 }, { opacity: 1, scale: 1, duration: .22, ease: "back.out(1.6)", immediateRender: false }, 29.46);
+      tl.fromTo("#blk1 .brule", { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: .3, ease: "power3.out" }, 29.71);
+      tl.fromTo("#blk1 .bgroup", { scale: 1 }, { scale: 1.07, duration: 1.81, ease: "power1.out", immediateRender: false }, 29.41);
+      tl.to("#blk1 .bword", { opacity: 0, duration: .12, ease: "power2.in" }, 31.09);
+      tl.to("#blk1 .bnum", { opacity: 0, duration: .12, ease: "power2.in" }, 31.09);
+      tl.to("#blk1 .brule", { opacity: 0, duration: .12, ease: "power2.in" }, 31.09);
+      tl.fromTo("#blk2 .bflash", { opacity: .95 }, { opacity: 0, duration: .26, ease: "power2.out", immediateRender: false }, 52.6);
+      tl.fromTo("#blk2 .bnum", { opacity: 0, scale: 1.28 }, { opacity: 1, scale: 1, duration: .7, ease: "power3.out", immediateRender: false }, 52.62);
+      tl.fromTo("#blk2 .bword", { opacity: 0, scale: .8 }, { opacity: 1, scale: 1, duration: .22, ease: "back.out(1.6)", immediateRender: false }, 52.65);
+      tl.fromTo("#blk2 .brule", { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: .3, ease: "power3.out" }, 52.9);
+      tl.fromTo("#blk2 .bgroup", { scale: 1 }, { scale: 1.07, duration: 2, ease: "power1.out", immediateRender: false }, 52.6);
+      tl.to("#blk2 .bword", { opacity: 0, duration: .12, ease: "power2.in" }, 54.47);
+      tl.to("#blk2 .bnum", { opacity: 0, duration: .12, ease: "power2.in" }, 54.47);
+      tl.to("#blk2 .brule", { opacity: 0, duration: .12, ease: "power2.in" }, 54.47);
+      tl.fromTo("#cta .endcard", { opacity: 0 }, { opacity: 1, duration: .3, ease: "power2.out", immediateRender: false }, 84.6);
+      tl.fromTo("#cta .end-big", { opacity: 0, scale: .6 }, { opacity: 1, scale: 1, duration: .4, ease: "back.out(1.8)", immediateRender: false }, 84.65);
+      tl.seek(0);
+    </script>
+  </body>
+</html>
